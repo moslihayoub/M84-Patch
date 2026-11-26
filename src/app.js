@@ -51,34 +51,34 @@ export function bootApexUI() {
   const top = mk(
     'div',
     'ax-top',
-    `<span class="ax-grip" data-grip title="Déplacer la barre">${icon('<path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/>')}</span>` +
+    `<span class="ax-grip" data-grip title="Drag toolbar">${icon('<path d="M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01"/>')}</span>` +
       `<span class="ax-brand">M84 Patch</span>` +
-      ib('data-m="select"', 'Sélection (V)', '<path d="M5 3l14 7-6 2-2 6z"/>', 'act') +
-      ib('data-m="text"', 'Texte (T)', '<path d="M5 6V4h14v2M12 4v16M9 20h6"/>') +
-      ib('data-m="pin"', 'Annotation (C)', '<path d="M4 5h16v11H9l-5 4z"/>') +
-      ib('data-m="zone"', 'Zone : grouper des éléments (Z)', '<path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><rect x="9" y="9" width="6" height="6" rx="1"/>') +
-      ib('data-m="shape"', 'Formes Guide / Réel (S)', '<rect x="3" y="3" width="8" height="8" rx="1.5"/><circle cx="16.5" cy="16.5" r="4.5"/><path d="M13 7l6 6"/>') +
-      ib('data-a="preview"', 'Aperçu interactif (P / maintenir Espace)', '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>') +
+      ib('data-m="select"', 'Select (V)', '<path d="M5 3l14 7-6 2-2 6z"/>', 'act') +
+      ib('data-m="text"', 'Text (T)', '<path d="M5 6V4h14v2M12 4v16M9 20h6"/>') +
+      ib('data-m="pin"', 'Pin Note (C)', '<path d="M4 5h16v11H9l-5 4z"/>') +
+      ib('data-m="zone"', 'Zone: group elements (Z)', '<path d="M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4"/><rect x="9" y="9" width="6" height="6" rx="1"/>') +
+      ib('data-m="shape"', 'Shapes Guide / Real (S)', '<rect x="3" y="3" width="8" height="8" rx="1.5"/><circle cx="16.5" cy="16.5" r="4.5"/><path d="M13 7l6 6"/>') +
+      ib('data-a="preview"', 'Interactive Preview (P / hold Space)', '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>') +
       `<i class="ax-sep"></i>` +
-      ib('data-a="undo"', 'Annuler (Ctrl+Z)', '<path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/>') +
-      ib('data-a="redo"', 'Rétablir (Ctrl+Maj+Z)', '<path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3"/>') +
-      ib('data-a="reset"', 'Tout réinitialiser', '<path d="M4 4v6h6M5.5 15a8 8 0 105-9"/>') +
-      ib('data-a="panel"', 'Afficher / masquer le panneau', '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/>') +
-      `<i class="ax-sep"></i><span class="ax-n" data-n>0 modif.</span>` +
-      `<button class="ax-b pri ic" data-a="export" title="Générer le patch UI">${icon('<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>')}<span class="ax-lbl">Patch UI</span></button>` +
-      ib('data-a="close"', 'Fermer (Alt+E)', '<path d="M6 6l12 12M18 6L6 18"/>')
+      ib('data-a="undo"', 'Undo (Ctrl+Z)', '<path d="M9 14L4 9l5-5M4 9h10a6 6 0 010 12h-3"/>') +
+      ib('data-a="redo"', 'Redo (Ctrl+Shift+Z)', '<path d="M15 14l5-5-5-5M20 9H10a6 6 0 000 12h3"/>') +
+      ib('data-a="reset"', 'Reset all', '<path d="M4 4v6h6M5.5 15a8 8 0 105-9"/>') +
+      ib('data-a="panel"', 'Toggle properties panel', '<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M15 4v16"/>') +
+      `<i class="ax-sep"></i><span class="ax-n" data-n>0 edits</span>` +
+      `<button class="ax-b pri ic" data-a="export" title="Generate UI Patch">${icon('<path d="M12 3v12M7 10l5 5 5-5M5 21h14"/>')}<span class="ax-lbl">Patch UI</span></button>` +
+      ib('data-a="close"', 'Close (Alt+E)', '<path d="M6 6l12 12M18 6L6 18"/>')
   );
 
   const subbar = mk(
     'div',
     'ax-subbar',
-    `<button class="ax-b act" data-sk="rect">Cadre</button>` +
-      `<button class="ax-b" data-sk="arrow">Flèche</button>` +
-      `<button class="ax-b" data-sk="line">Ligne</button>` +
+    `<button class="ax-b act" data-sk="rect">Frame</button>` +
+      `<button class="ax-b" data-sk="arrow">Arrow</button>` +
+      `<button class="ax-b" data-sk="line">Line</button>` +
       `<button class="ax-b" data-sk="ellipse">Ellipse</button>` +
       `<i class="ax-sep"></i>` +
       `<button class="ax-b warn" data-sr="guide">Guide</button>` +
-      `<button class="ax-b" data-sr="real">Réel</button>`
+      `<button class="ax-b" data-sr="real">Real</button>`
   );
 
   const pan = mk('div', 'ax-pan');
@@ -95,18 +95,18 @@ export function bootApexUI() {
   const pop = mk(
     'div',
     'ax-pop',
-    '<strong style="color:#fbbf24">Annotation ancrée à l’élément</strong><textarea class="ax-i" rows="3" placeholder="Remarque… (Ctrl+V pour coller une image)"></textarea><div data-th></div><div class="ax-row"><button class="ax-b" data-pc>Annuler</button><button class="ax-b pri" data-ps>Ajouter</button></div>'
+    '<strong style="color:#fbbf24">Anchored Element Note</strong><textarea class="ax-i" rows="3" placeholder="Add a note… (Ctrl+V to paste an image)"></textarea><div data-th></div><div class="ax-row"><button class="ax-b" data-pc>Cancel</button><button class="ax-b pri" data-ps>Add</button></div>'
   );
 
   const mod = mk(
     'div',
     'ax-mod',
     `<div class="ax-card">
-      <div class="ax-row"><strong style="font-size:14px">M84 Patch · Prompt Patch UI (GPT / Claude / Antigravity / Cursor…)</strong><button class="ax-b" data-mc>✕</button></div>
-      <label class="ax-f">Intention libre (optionnel)<textarea data-note rows="2" placeholder="Ex. : plus institutionnel, plus aéré, CTA plus contrasté…"></textarea></label>
+      <div class="ax-row"><strong style="font-size:14px">M84 Patch · Visual UI Patch (GPT / Claude / Antigravity / Cursor…)</strong><button class="ax-b" data-mc>✕</button></div>
+      <label class="ax-f">Design intent (optional)<textarea data-note rows="2" placeholder="e.g. cleaner hierarchy, more breathing room, higher CTA contrast…"></textarea></label>
       <textarea data-out rows="15" readonly></textarea>
       <div data-imgs style="display:flex;flex-wrap:wrap;gap:6px"></div>
-      <div class="ax-row"><span data-ms style="color:#a1a1aa">Copie puis colle dans ton assistant IA.</span><button class="ax-b pri" data-cp>Copier le prompt</button></div>
+      <div class="ax-row"><span data-ms style="color:#a1a1aa">Copy and paste into any AI coding assistant.</span><button class="ax-b pri" data-cp>Copy Patch Prompt</button></div>
     </div>`
   );
 
@@ -157,7 +157,7 @@ export function bootApexUI() {
         items.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="2.5" marker-end="url(#${isGuide ? 'ax-arr-g' : 'ax-arr-r'})" ${dash}/>`);
       }
       if (idx >= 0) {
-        const tag = `#${idx + 1} ${isGuide ? 'Guide' : 'Réel'}${sh.label ? ' · ' + sh.label : ''}`;
+        const tag = `#${idx + 1} ${isGuide ? 'Guide' : 'Real'}${sh.label ? ' · ' + sh.label : ''}`;
         items.push(`<text x="${lx + 4}" y="${Math.max(14, ty - 6)}" fill="${stroke}" font-size="11" font-weight="700" font-family="system-ui,sans-serif">${esc(tag)}</text>`);
       }
     };
@@ -233,7 +233,8 @@ export function bootApexUI() {
   };
 
   const updateToolbar = () => {
-    top.querySelector('[data-n]').textContent = api.countChanges() + ' modif.';
+    const cnt = api.countChanges();
+    top.querySelector('[data-n]').textContent = cnt + (cnt === 1 ? ' edit' : ' edits');
     top.querySelector('[data-a="undo"]').disabled = !st.undoStack.length;
     top.querySelector('[data-a="redo"]').disabled = !st.redoStack.length;
     top.querySelector('[data-a="preview"]').classList.toggle('warn', st.preview || spacePreview);
@@ -316,7 +317,7 @@ export function bootApexUI() {
       if (im.length) {
         const hint = document.createElement('div');
         hint.style.cssText = 'width:100%;color:#a1a1aa;font-size:11px';
-        hint.textContent = 'Images jointes : clic droit → Copier l’image, puis colle-les dans le chat dans l’ordre.';
+        hint.textContent = 'Attached images: right-click → Copy image, then paste them into your AI chat in order.';
         imgsBox.appendChild(hint);
         im.forEach((u, k) => {
           const fig = document.createElement('figure');
@@ -625,7 +626,7 @@ export function bootApexUI() {
   });
 
   // Annotations popup
-  const PIN_TITLE = 'Annotation ancrée à l’élément';
+  const PIN_TITLE = 'Anchored Element Note';
   const closePop = () => {
     zb.style.display = 'none';
     pop.querySelector('strong').textContent = PIN_TITLE;
@@ -705,7 +706,7 @@ export function bootApexUI() {
     if (e.target.hasAttribute('data-cp')) {
       const ta = mod.querySelector('[data-out]');
       const ms = mod.querySelector('[data-ms]');
-      const ok = () => (ms.textContent = '✓ Copié ! Colle-le dans Claude, Antigravity ou Cursor.');
+      const ok = () => (ms.textContent = '✓ Copied! Paste it into GPT, Claude, Antigravity, or Cursor.');
       if (navigator.clipboard?.writeText) {
         navigator.clipboard.writeText(ta.value).then(ok).catch(() => {
           ta.select();
@@ -960,7 +961,7 @@ export function bootApexUI() {
         height: u.b - u.t + 8 + 'px'
       });
       pendingPin = { s: g.map(getUniqueSelector).join(' + '), group: g };
-      pop.querySelector('strong').textContent = `Annotation de zone · ${g.length} élément${g.length > 1 ? 's' : ''}`;
+      pop.querySelector('strong').textContent = `Zone Note · ${g.length} element${g.length > 1 ? 's' : ''}`;
       Object.assign(pop.style, {
         left: Math.min(e.clientX + 10, innerWidth - 270) + 'px',
         top: Math.min(e.clientY + 10, innerHeight - 190) + 'px'
@@ -998,7 +999,7 @@ export function bootApexUI() {
         rh: h
       };
       pendingPin = { isShape: true, shape };
-      pop.querySelector('strong').textContent = `Forme ${st.shapeRole === 'real' ? 'Réelle' : 'Guide'} (${st.shapeKind}) · Légende (optionnel)`;
+      pop.querySelector('strong').textContent = `${st.shapeRole === 'real' ? 'Real' : 'Guide'} Shape (${st.shapeKind}) · Label (optional)`;
       Object.assign(pop.style, {
         left: Math.min(e.clientX + 10, innerWidth - 270) + 'px',
         top: Math.min(e.clientY + 10, innerHeight - 170) + 'px'

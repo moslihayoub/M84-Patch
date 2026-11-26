@@ -1,17 +1,17 @@
 import { getUniqueSelector } from './utils.js';
 
 export function generatePatchPrompt(st, freeNote = '') {
-  const title = document.title || location.pathname || 'Page UI';
+  const title = document.title || location.pathname || 'UI Page';
   const out = [
-    `# Patch visuel UI — ${title}`,
+    `# Visual UI Patch — ${title}`,
     '',
-    'Important : ces modifications sont des indications visuelles (déplacements, tailles, espacements, masques, guides) qui expriment mon intention, pas des valeurs à copier en pixels ni en `style=""` inline. Applique-les proprement dans le code source (CSS / Tailwind / tokens `:root` / composants) en respectant : specs du projet, design system, grille de 8 px, responsive mobile-first et WCAG 2.1 AA. Unifie les styles : si une typographie, couleur, rayon, ombre ou espacement change sur un élément, étends le changement à tous les éléments de même rôle via le token ou la classe partagée plutôt que de créer des exceptions.',
+    'Important: these visual edits (offsets, sizes, spacing, masks, guides) express design intent — do NOT copy raw pixels or write inline `style=""` attributes. Apply them cleanly in source stylesheets, Tailwind classes, `:root` tokens, and reusable components following project specs, 8px spacing grid, mobile-first responsiveness, and WCAG 2.1 AA. Unify styles: if typography, color, radius, shadow, or spacing changes on one element, propagate it to all elements sharing the same role via tokens or shared classes rather than creating one-off exceptions.',
     ''
   ];
 
   const note = freeNote.trim();
   if (note) {
-    out.push('## Intention', note, '');
+    out.push('## Design Intent', note, '');
   }
 
   if (st.styleDiffs.size) {
@@ -22,42 +22,42 @@ export function generatePatchPrompt(st, freeNote = '') {
       lines.push(`- \`${getUniqueSelector(el)}\``);
       entries.forEach(([prop, diff]) => {
         const cssProp = prop.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
-        lines.push(`  - ${cssProp} : ${diff.b} → ${diff.a}`);
+        lines.push(`  - ${cssProp}: ${diff.b} → ${diff.a}`);
       });
     });
     if (lines.length) out.push('## Styles', ...lines, '');
   }
 
   if (st.textDiffs.size) {
-    out.push('## Textes');
+    out.push('## Copy / Text');
     st.textDiffs.forEach((diff, el) => {
-      out.push(`- \`${getUniqueSelector(el)}\` : « ${diff.b} » → « ${diff.a} »`);
+      out.push(`- \`${getUniqueSelector(el)}\`: "${diff.b}" → "${diff.a}"`);
     });
     out.push('');
   }
 
   const activeMoves = st.domMoves.filter(m => m.active);
   if (activeMoves.length) {
-    out.push('## Ordre des éléments (déplacements)');
+    out.push('## DOM Order (Reordering)');
     activeMoves.forEach(m => out.push('- ' + m.desc));
     out.push('');
   }
 
   if (st.customColors.length) {
-    out.push('## Nouvelles couleurs / dégradés (à déclarer comme tokens :root)');
-    st.customColors.forEach(c => out.push(`- \`${c.n}\` : ${c.v}`));
+    out.push('## New Colors / Gradients (declare as :root tokens)');
+    st.customColors.forEach(c => out.push(`- \`${c.n}\`: ${c.v}`));
     out.push('');
   }
 
   const activeShapes = st.shapes.filter(s => s.active);
   if (st.masks.size || activeShapes.length) {
-    out.push('## Formes & masques (Guide / Réel)');
+    out.push('## Shapes & Masks (Guide / Real)');
     st.masks.forEach((m, el) => {
-      out.push(`- [Réel · Masque ${m.name}] sur \`${getUniqueSelector(el)}\` : \`clip-path: ${m.clipPath}\` (adapter en responsive)`);
+      out.push(`- [Real · Mask ${m.name}] on \`${getUniqueSelector(el)}\`: \`clip-path: ${m.clipPath}\` (adapt responsively)`);
     });
     activeShapes.forEach((sh, idx) => {
-      const roleTag = sh.role === 'real' ? 'Réel' : 'Guide';
-      const target = sh.sel ? ` sur \`${sh.sel}\`` : '';
+      const roleTag = sh.role === 'real' ? 'Real' : 'Guide';
+      const target = sh.sel ? ` on \`${sh.sel}\`` : '';
       const dims = `${Math.round(sh.rw)}×${Math.round(sh.rh)}px`;
       const desc = sh.label ? ` — ${sh.label}` : '';
       out.push(`- #${idx + 1} [${roleTag} · ${sh.kind}]${target} (${dims})${desc}`);
@@ -66,7 +66,7 @@ export function generatePatchPrompt(st, freeNote = '') {
   }
 
   if (st.codeBlocks.size) {
-    out.push('## Snippets Code { } (respecter les tokens :root et prefers-reduced-motion)');
+    out.push('## Code { } Snippets (use :root tokens & respect prefers-reduced-motion)');
     st.codeBlocks.forEach((entry, el) => {
       out.push(`- \`${getUniqueSelector(el)}\``);
       if (entry.css.trim()) {
@@ -81,12 +81,12 @@ export function generatePatchPrompt(st, freeNote = '') {
 
   const activePins = st.pins.filter(p => p.active);
   if (activePins.length) {
-    out.push('## Annotations (ancrées à l’élément / zones)');
+    out.push('## Annotations (Element / Zone)');
     let imgIdx = 0;
     activePins.forEach((p, i) => {
-      const imgRefs = p.imgs.map(() => ` [image jointe n°${++imgIdx}]`).join('');
-      const target = p.group ? `la zone (${p.group.length} éléments) \`${p.s}\`` : `\`${p.s}\``;
-      out.push(`- #${i + 1} sur ${target} : ${p.n}${imgRefs}`);
+      const imgRefs = p.imgs.map(() => ` [attached image #${++imgIdx}]`).join('');
+      const target = p.group ? `zone (${p.group.length} elements) \`${p.s}\`` : `\`${p.s}\``;
+      out.push(`- #${i + 1} on ${target}: ${p.n}${imgRefs}`);
     });
     out.push('');
   }

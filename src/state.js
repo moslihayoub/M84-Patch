@@ -33,7 +33,7 @@ export function createState() {
     shapeRole: 'guide', // guide | real
     sel: null,
     lock: false,
-    shut: new Set(['Effets', 'Code { }', 'Calque']),
+    shut: new Set(['Effects', 'Code { }', 'Layer']),
     cgx: new Set(),
     cgadd: null,
     gmode: 'solid',
@@ -209,7 +209,7 @@ export function createState() {
     if (!other) return;
     const nextRef = el.nextSibling;
     const entry = {
-      desc: `\`${getUniqueSelector(el)}\` passe ${delta < 0 ? 'avant' : 'après'} \`${getUniqueSelector(other)}\``,
+      desc: `\`${getUniqueSelector(el)}\` moved ${delta < 0 ? 'before' : 'after'} \`${getUniqueSelector(other)}\``,
       active: true
     };
     const redoFn = () => {
@@ -232,7 +232,7 @@ export function createState() {
     if (kids.length < 2) return;
     const anchor = kids[kids.length - 1].nextSibling;
     const entry = {
-      desc: `ordre des ${kids.length} enfants de \`${getUniqueSelector(el)}\` inversé`,
+      desc: `order of ${kids.length} children inside \`${getUniqueSelector(el)}\` reversed`,
       active: true
     };
     const redoFn = () => {

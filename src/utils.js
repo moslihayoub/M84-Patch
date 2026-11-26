@@ -6,7 +6,7 @@ export const FONTS = [
   ['Noto Sans Tifinagh', "'Noto Sans Tifinagh', sans-serif"],
   ['Georgia (serif)', 'Georgia, serif'],
   ['Mono', 'ui-monospace, SFMono-Regular, Menlo, monospace'],
-  ['Système', 'system-ui, -apple-system, sans-serif']
+  ['System UI', 'system-ui, -apple-system, sans-serif']
 ];
 
 export const TEXT_STYLES = {
@@ -22,14 +22,14 @@ export const MASK_PRESETS = [
   {
     id: 'arc-bottom',
     group: 'section',
-    name: 'Arc bas',
+    name: 'Bottom Arc',
     svg: '<path d="M2 2h24v12Q14 20 2 14z" fill="currentColor" opacity=".8"/>',
     build: d => `ellipse(${100 + d * 2}% ${100 - Math.min(d, 40)}% at 50% ${Math.min(d, 30)}%)`
   },
   {
     id: 'diag-bottom',
     group: 'section',
-    name: 'Diagonale',
+    name: 'Diagonal',
     svg: '<path d="M2 2h24v11L2 18z" fill="currentColor" opacity=".8"/>',
     build: d => `polygon(0 0, 100% 0, 100% ${100 - d}%, 0 100%)`
   },
@@ -43,35 +43,35 @@ export const MASK_PRESETS = [
   {
     id: 'circle',
     group: 'media',
-    name: 'Cercle',
+    name: 'Circle',
     svg: '<circle cx="14" cy="10" r="8" fill="currentColor" opacity=".8"/>',
     build: d => `circle(${Math.max(20, 50 - Math.round(d / 3))}% at 50% 50%)`
   },
   {
     id: 'pill',
     group: 'media',
-    name: 'Pilule',
+    name: 'Pill',
     svg: '<rect x="3" y="4" width="22" height="12" rx="6" fill="currentColor" opacity=".8"/>',
     build: d => `inset(${Math.round(d / 4)}% 0 round 999px)`
   },
   {
     id: 'hexagon',
     group: 'media',
-    name: 'Hexagone',
+    name: 'Hexagon',
     svg: '<polygon points="14,2 24,6 24,14 14,18 4,14 4,6" fill="currentColor" opacity=".8"/>',
     build: () => 'polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%)'
   },
   {
     id: 'diamond',
     group: 'media',
-    name: 'Losange',
+    name: 'Diamond',
     svg: '<polygon points="14,1 25,10 14,19 3,10" fill="currentColor" opacity=".8"/>',
     build: () => 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)'
   },
   {
     id: 'bevel',
     group: 'media',
-    name: 'Biseau',
+    name: 'Bevel',
     svg: '<polygon points="6,2 22,2 26,6 26,14 22,18 6,18 2,14 2,6" fill="currentColor" opacity=".8"/>',
     build: d => {
       const c = Math.max(4, Math.min(30, d));

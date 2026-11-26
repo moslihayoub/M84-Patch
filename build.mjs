@@ -113,11 +113,11 @@ function createIconPng(size) {
 
 function buildDemoHtml(scriptBlock) {
   return `<!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>M84 Patch — Playground de test interactif</title>
+  <title>M84 Patch — Interactive Visual Playground</title>
   <style>
     :root {
       --bg-page: #f8fafc;
@@ -189,32 +189,32 @@ function buildDemoHtml(scriptBlock) {
         <span>M84 Patch Playground</span>
       </a>
       <nav>
-        <a href="#features">Composants</a>
-        <a href="#pricing">Cartes &amp; Ordre</a>
-        <a href="../docs/index.html">Landing Open-Source</a>
+        <a href="#features">Components</a>
+        <a href="#pricing">Cards &amp; Order</a>
+        <a href="../docs/index.html">Landing Page</a>
       </nav>
-      <button class="btn btn-primary" id="demo-cta-top" onclick="window.__apexuiToggle && window.__apexuiToggle(true)">Ouvrir M84 Patch</button>
+      <button class="btn btn-primary" id="demo-cta-top" onclick="window.__apexuiToggle && window.__apexuiToggle(true)">Open M84 Patch</button>
     </div>
   </header>
 
   <section class="hero" id="demo-hero">
     <div class="container hero-grid">
       <div>
-        <span class="pill">Sandbox de test · Appuie sur Alt+E</span>
-        <h1 id="hero-title">Teste chaque outil M84 Patch sur une vraie interface.</h1>
-        <p id="hero-subtitle">Sélectionne ce titre, applique un masque Arc bas sur le Hero, réordonne les cartes ou injecte du CSS live dans Code { } — puis exporte ton # Patch visuel UI.</p>
+        <span class="pill">Live Sandbox · Press Alt+E</span>
+        <h1 id="hero-title">Test every M84 Patch tool on a real interface.</h1>
+        <p id="hero-subtitle">Select this headline, apply a Bottom Arc mask on the Hero, reorder cards, or inject live CSS in Code { } — then copy your clean # Visual UI Patch.</p>
         <div class="hero-actions">
-          <button class="btn btn-primary" id="hero-cta-primary" onclick="window.__apexuiToggle && window.__apexuiToggle(true)">Lancer l’éditeur (Alt+E)</button>
-          <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="#features">Explorer les blocs</a>
+          <button class="btn btn-primary" id="hero-cta-primary" onclick="window.__apexuiToggle && window.__apexuiToggle(true)">Launch Editor (Alt+E)</button>
+          <a class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.25)" href="#features">Explore Blocks</a>
         </div>
       </div>
       <div class="hero-card" id="hero-metrics-card">
-        <strong style="font-size:14px;color:#7dd3fc">Télémétrie Design System (Démo)</strong>
+        <strong style="font-size:14px;color:#7dd3fc">Design System Telemetry (Demo)</strong>
         <div class="kpi-grid">
-          <div class="kpi"><strong>9</strong><span>Tokens :root détectés</span></div>
-          <div class="kpi"><strong>0</strong><span>Style inline en prod</span></div>
-          <div class="kpi"><strong>9</strong><span>Masques clip-path %</span></div>
-          <div class="kpi"><strong>100%</strong><span>Isolé Shadow DOM</span></div>
+          <div class="kpi"><strong>9</strong><span>:root Tokens detected</span></div>
+          <div class="kpi"><strong>0</strong><span>Inline styles in prod</span></div>
+          <div class="kpi"><strong>9</strong><span>Responsive % Masks</span></div>
+          <div class="kpi"><strong>100%</strong><span>Shadow DOM Isolated</span></div>
         </div>
       </div>
     </div>
@@ -223,24 +223,24 @@ function buildDemoHtml(scriptBlock) {
   <section class="section" id="features">
     <div class="container">
       <div class="section-head">
-        <h2>Terrain d’essai Product &amp; UX/UI Designer</h2>
-        <p>Chaque carte ci-dessous sert à tester un scénario concret : couleurs :root, masques d’image, réordonnancement DOM, annotations de zone et snippets Code { }.</p>
+        <h2>Product &amp; UX/UI Designer Playground</h2>
+        <p>Each card below tests a real scenario: :root tokens, image masks, DOM reordering, zone annotations, and Code { } snippets.</p>
       </div>
       <div class="bento" id="bento-grid">
         <article class="card" id="card-tokens">
-          <div class="media m-blue">Tester : Masque Cercle / Blob</div>
-          <h3>Tokens :root &amp; Dégradés</h3>
-          <p>Clique sur cette carte puis ouvre Fond &amp; bordure pour tester les pastilles :root et la création de dégradés.</p>
+          <div class="media m-blue">Try: Circle / Blob Mask</div>
+          <h3>:root Tokens &amp; Gradients</h3>
+          <p>Click this card and open Fill &amp; Border to test :root color swatches and custom gradient creation.</p>
         </article>
         <article class="card" id="card-shapes">
-          <div class="media m-green">Tester : Formes Guide / Réel (S)</div>
-          <h3>Formes &amp; Masques responsives</h3>
-          <p>Appuie sur S pour dessiner une flèche ou un cadre Guide, ou applique un clip-path sur le bandeau ci-dessus.</p>
+          <div class="media m-green">Try: Guide / Real Shapes (S)</div>
+          <h3>Responsive Shapes &amp; Masks</h3>
+          <p>Press S to draw an arrow or Guide frame, or apply a responsive clip-path mask to the media block above.</p>
         </article>
         <article class="card" id="card-code">
-          <div class="media m-amber">Tester : Code { } &amp; Zone (Z)</div>
-          <h3>CSS live &amp; Annotations Zone</h3>
-          <p>Sélectionne plusieurs cartes avec Z pour une annotation groupée, ou teste un effet hover dans l’accordéon Code { }.</p>
+          <div class="media m-amber">Try: Code { } &amp; Zone (Z)</div>
+          <h3>Live CSS &amp; Zone Notes</h3>
+          <p>Drag a Zone (Z) across multiple cards for a grouped note, or test hover CSS inside the Code { } accordion.</p>
         </article>
       </div>
     </div>
@@ -249,31 +249,31 @@ function buildDemoHtml(scriptBlock) {
   <section class="section" id="pricing" style="padding-top:12px">
     <div class="container">
       <div class="section-head">
-        <h2>Test d’ordre DOM &amp; typographie</h2>
-        <p>Sélectionne une carte et utilise Alt+← / Alt+→ (ou le bouton Inverser sur le conteneur) pour réordonner la grille.</p>
+        <h2>DOM Order &amp; Typography Stress Test</h2>
+        <p>Select a card and press Alt+← / Alt+→ (or Reverse children on the grid) to reorder blocks live.</p>
       </div>
       <div class="pricing" id="pricing-grid">
         <div class="plan" id="plan-skill">
-          <span style="font-size:12px;font-weight:700;color:var(--brand-600)">SKILL CLAUDE / ANTIGRAVITY</span>
-          <div class="price">Gratuit · MIT</div>
-          <p style="color:var(--text-muted);margin:0">Un bloc &lt;script data-m84-patch&gt; autonome pour tes artefacts HTML et prototypes mono-fichier.</p>
+          <span style="font-size:12px;font-weight:700;color:var(--brand-600)">AI SKILL · CLAUDE / ANTIGRAVITY</span>
+          <div class="price">Free · MIT</div>
+          <p style="color:var(--text-muted);margin:0">Self-contained &lt;script data-m84-patch&gt; block for standalone HTML artifacts and rapid prototypes.</p>
           <ul class="checklist">
-            <li>✓ Compatible iframes Claude.ai</li>
-            <li>✓ Protocole d’application # Patch visuel UI inclus</li>
-            <li>✓ Zéro dépendance externe</li>
+            <li>✓ Works inside sandboxed HTML iframes</li>
+            <li>✓ Built-in # Visual UI Patch protocol</li>
+            <li>✓ Zero external dependencies</li>
           </ul>
-          <button class="btn btn-ghost">Tester le bouton secondaire</button>
+          <button class="btn btn-ghost">Test Secondary Button</button>
         </div>
         <div class="plan featured" id="plan-ext">
-          <span style="font-size:12px;font-weight:700;color:var(--accent-500)">EXTENSION CHROME MV3</span>
+          <span style="font-size:12px;font-weight:700;color:var(--accent-500)">CHROME EXTENSION MV3</span>
           <div class="price">Open Source</div>
-          <p style="color:var(--text-muted);margin:0">Fonctionne sur localhost (Next.js, Vite, React) et sur n’importe quel site live ou staging en 1 clic.</p>
+          <p style="color:var(--text-muted);margin:0">Works on localhost (Next.js, Vite, React) and any live staging or production website in 1 click.</p>
           <ul class="checklist">
-            <li>✓ Isolation 100 % Shadow DOM</li>
-            <li>✓ Permissions minimales (activeTab + scripting)</li>
-            <li>✓ Mode Aperçu (P / maintenir Espace)</li>
+            <li>✓ 100% Shadow DOM CSS isolation</li>
+            <li>✓ Minimal permissions (activeTab + scripting)</li>
+            <li>✓ Interactive Preview (P / hold Space)</li>
           </ul>
-          <button class="btn btn-primary">Tester le CTA principal</button>
+          <button class="btn btn-primary">Test Primary CTA</button>
         </div>
       </div>
     </div>
@@ -281,8 +281,8 @@ function buildDemoHtml(scriptBlock) {
 
   <footer>
     <div class="container foot-row">
-      <span><strong>M84 Patch</strong> — Playground de test interactif (v2.0.0)</span>
-      <span>Créé par <a href="https://moslih84.com" target="_blank" rel="noopener noreferrer" style="color:var(--brand-600);font-weight:600">Moslih84</a> · Licence MIT</span>
+      <span><strong>M84 Patch</strong> — Interactive Visual Playground (v2.0.0)</span>
+      <span>Created by <a href="https://moslih84.com" target="_blank" rel="noopener noreferrer" style="color:var(--brand-600);font-weight:600">Moslih84</a> · MIT License</span>
     </div>
   </footer>
 
