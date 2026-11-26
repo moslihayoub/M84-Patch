@@ -100,7 +100,7 @@
     /* Mobile Burger & Drawer */
     .nav-burger {
       display: none; align-items: center; justify-content: center;
-      width: 42px; height: 42px; border-radius: 10px;
+      width: 40px; height: 40px; border-radius: 10px;
       background: var(--surface-2); border: 1px solid var(--border-strong);
       color: var(--text); cursor: pointer; padding: 0; flex-shrink: 0;
       transition: background .15s, border-color .15s;
@@ -114,11 +114,12 @@
     .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
     .drawer {
       position: fixed; top: 0; bottom: 0; right: 0; z-index: 150;
-      width: min(310px, 86vw); background: #101015;
+      width: min(272px, 80vw); background: #101015;
       border-left: 1px solid var(--border-strong);
       box-shadow: -20px 0 60px rgba(0, 0, 0, .65);
-      display: flex; flex-direction: column; padding: 18px 20px 24px; gap: 20px;
-      transform: translateX(100%); transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+      display: flex; flex-direction: column; padding: 14px 16px 18px; gap: 14px;
+      transform: translateX(100%); visibility: hidden;
+      transition: transform .24s cubic-bezier(.22, 1, .36, 1), visibility .24s;
       overflow-y: auto;
     }
     html[dir="rtl"] .drawer {
@@ -126,35 +127,38 @@
       box-shadow: 20px 0 60px rgba(0, 0, 0, .65);
       transform: translateX(-100%);
     }
-    .drawer.open { transform: translateX(0); }
+    .drawer.open, html[dir="rtl"] .drawer.open {
+      transform: translateX(0);
+      visibility: visible;
+    }
     .drawer-head {
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-      padding-bottom: 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
     }
     .drawer-close {
-      width: 38px; height: 38px; border-radius: 9px;
+      width: 34px; height: 34px; border-radius: 8px;
       background: var(--surface-2); border: 1px solid var(--border-strong);
-      color: var(--text); font-size: 20px; line-height: 1; cursor: pointer;
+      color: var(--text); font-size: 18px; line-height: 1; cursor: pointer;
       display: grid; place-items: center;
     }
-    .drawer-nav { display: flex; flex-direction: column; gap: 4px; }
+    .drawer-nav { display: flex; flex-direction: column; gap: 2px; }
     .drawer-nav a {
-      padding: 11px 12px; border-radius: 10px; font-size: 15px; font-weight: 600;
+      padding: 9px 10px; border-radius: 9px; font-size: 14px; font-weight: 600;
       color: var(--text); transition: background .15s;
     }
     .drawer-nav a:hover { background: var(--surface-2); }
     .drawer-section-label {
       font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
-      color: var(--muted); margin-bottom: 8px;
+      color: var(--muted); margin-bottom: 6px;
     }
     html[dir="rtl"] .drawer-section-label { letter-spacing: 0; }
     .drawer-lang .lang-sw { width: 100%; }
-    .drawer-lang .lang-sw button { flex: 1; padding: 9px 12px; font-size: 13px; }
+    .drawer-lang .lang-sw button { flex: 1; padding: 8px 10px; font-size: 12.5px; }
     .drawer-actions {
-      margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border);
-      display: flex; flex-direction: column; gap: 10px;
+      margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 8px;
     }
-    .drawer-actions .btn { width: 100%; min-height: 44px; }
+    .drawer-actions .btn { width: 100%; min-height: 40px; padding: 8px 12px; font-size: 13px; }
 
     /* Language switcher */
     .lang-sw {
@@ -282,8 +286,8 @@
       direction: ltr; text-align: left;
       margin-top: 14px; padding: 14px; border-radius: 10px;
       background: #0b0b0e; border: 1px solid var(--border);
-      font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: #cbd5e1;
-      overflow-x: auto; max-width: 100%;
+      font: 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: #cbd5e1;
+      overflow-x: auto; max-width: 100%; white-space: pre;
     }
     .step-list {
       margin: 14px 0 0; padding: 14px 16px 14px 32px; border-radius: 10px;
@@ -361,8 +365,9 @@
       .hero-meta { gap: 8px 14px; font-size: 12.5px; }
 
       .browser-frame { margin-top: 28px; border-radius: 13px; }
-      .browser-bar { padding: 9px 12px; gap: 6px; }
+      .browser-bar { padding: 9px 12px; gap: 6px; flex-wrap: wrap; }
       .url-pill { margin-left: 6px; font-size: 11px; padding: 4px 8px; }
+      .install-dl-row .btn { width: 100%; min-height: 44px; }
 
       .section { padding: 52px 0; }
       .section-head { margin-bottom: 28px; }
@@ -455,7 +460,7 @@
       <div class="hero-center">
         <span class="eyebrow" data-i18n="hero_eyebrow">Open Source · MIT License · Chrome MV3 Extension + AI Skill</span>
         <h1 data-i18n="hero_title">The <span>Figma-like</span> visual UI editor that speaks to every AI coder.</h1>
-        <p data-i18n="hero_sub">Built for <strong>Product Designers</strong>, <strong>UX/UI Designers</strong> &amp; <strong>Vibecoders</strong>: tweak any <code>localhost</code>, live site, or HTML artifact visually and copy a clean <code># Visual UI Patch</code> — compatible with <strong>all AI tools</strong> (ChatGPT / GPT, Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini, v0, Bolt, Lovable…).</p>
+        <p data-i18n="hero_sub">Built for <strong>Product Designers</strong>, <strong>UX/UI Designers</strong> &amp; <strong>Vibecoders</strong>: tweak any <code>localhost</code>, live site, or HTML artifact visually and copy a clean <code style="white-space:nowrap"># Visual UI Patch</code> — compatible with <strong>all AI tools</strong> (ChatGPT / GPT, Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini, v0, Bolt, Lovable…).</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="./demo.html" data-i18n="cta_play">Try Interactive Playground</a>
           <a class="btn btn-secondary" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" data-i18n="cta_gh">Open Source on GitHub ↗</a>
@@ -613,8 +618,8 @@
       <div class="browser-frame" style="margin-top:0">
         <div class="browser-bar">
           <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
-          <span class="url-pill">https://github.com/moslihayoub/M84-Patch</span>
-          <a class="btn btn-primary btn-sm" style="margin-left:auto" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" data-i18n="os_btn">Open on GitHub ↗</a>
+          <span class="url-pill">github.com/moslihayoub/M84-Patch</span>
+          <a class="btn btn-primary btn-sm" style="margin-inline-start:auto" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" data-i18n="os_btn">Open on GitHub ↗</a>
         </div>
         <img src="assets/github-repo.png" alt="M84 Patch Open-Source GitHub Repository (moslihayoub/M84-Patch)" data-zoom>
       </div>
@@ -633,7 +638,7 @@
           <span class="tag good" data-i18n="i1_tag">Recommended · localhost &amp; live sites</span>
           <h3 style="margin:0 0 8px" data-i18n="i1_t">Chrome Extension (Manifest V3)</h3>
           <p style="margin:0;color:var(--muted);font-size:14px" data-i18n="i1_d">Works on Chrome, Brave, Edge &amp; Arc. Zero changes in your Git repos. Minimal permissions (<code>activeTab</code> + <code>scripting</code>).</p>
-          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <div class="install-dl-row" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn btn-primary btn-sm" href="./downloads/m84-patch-chrome-extension.zip" download="m84-patch-chrome-extension.zip" data-i18n="i1_dl">⬇ Download Chrome Extension (.zip)</a>
           </div>
           <ol class="step-list" data-i18n="i1_steps">
@@ -641,17 +646,20 @@
             <li>Open <code>chrome://extensions</code> (Chrome / Brave / Edge / Arc)</li>
             <li>Enable <strong>Developer mode</strong> (top right)</li>
             <li>Click <strong>Load unpacked</strong> → select the unzipped folder</li>
-            <li>Press <code>Alt+E</code> (or click the <strong>M84</strong> icon) on any tab</li>
+            <li>Press <code>Alt+Shift+M</code> (or click the <strong>M84</strong> icon) on any tab</li>
           </ol>
         </div>
         <div class="card">
           <span class="tag" style="background:var(--brand-soft);color:#7dd3fc" data-i18n="i2_tag">HTML Artifacts · Claude / Antigravity</span>
           <h3 style="margin:0 0 8px" data-i18n="i2_t">Standalone AI Skill (.zip + SKILL.md)</h3>
           <p style="margin:0;color:var(--muted);font-size:14px" data-i18n="i2_d">Import <code>m84-patch-skill.zip</code> in Claude.ai or drop it into your Antigravity / Cursor / Windsurf skills folder.</p>
-          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+          <div class="install-dl-row" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn btn-secondary btn-sm" href="./downloads/m84-patch-skill.zip" download="m84-patch-skill.zip" data-i18n="i2_dl">⬇ Download AI Skill (.zip)</a>
           </div>
-          <div class="code-box">m84-patch-skill.zip<br>└── m84-patch/<br>&nbsp;&nbsp;&nbsp;&nbsp;├── SKILL.md       # # Visual UI Patch protocol<br>&nbsp;&nbsp;&nbsp;&nbsp;└── m84-patch.html # &lt;script data-m84-patch&gt;</div>
+          <div class="code-box">m84-patch-skill.zip
+└── m84-patch/
+    ├── SKILL.md       # # Visual UI Patch protocol
+    └── m84-patch.html # &lt;script data-m84-patch&gt;</div>
         </div>
       </div>
 
@@ -759,73 +767,73 @@
       why_sub: 'الديزاينر كيفكر بالعين ماشي غير بالكتابة. M84 Patch كياخد التعديل البصري ديالك وكيحولو لبرومبت منظم كيحترم الديزاين سيستيم.',
       cmp_bad_tag: 'قبل · بلا M84 Patch',
       cmp_bad_title: 'برومبتات طويلة وماشي دقيقة',
-      cmp_bad_list: '<li>× صعيب تشرح لـ AI إينا بوطون أولا كارطا بالضبط بغيتي تبدل.</li><li>× الذكاء الاصطناعي كيبدل عنصر واحد وكيخلي باقي الديزاين سيستيم مخربق.</li><li>× ما تقدرش تجرب ماسك <code>clip-path</code> أولا ترتيب DOM قبل ما تكتب البرومبت.</li><li>× كيحط ألوان عشوائية فبلاصة الـ tokens <code>:root</code> ديال المشروع.</li>',
+      cmp_bad_list: '<li>× صعيب تشرح لـ <span class="ltr">AI</span> إينا بوطون أولا كارطا بالضبط بغيتي تبدل.</li><li>× الذكاء الاصطناعي كيبدل عنصر واحد وكيخلي باقي الديزاين سيستيم مخربق.</li><li>× ما تقدرش تجرب ماسك <code>clip-path</code> أولا ترتيب <span class="ltr">DOM</span> قبل ما تكتب البرومبت.</li><li>× كيحط ألوان عشوائية فبلاصة متغيرات <code>:root</code> ديال المشروع.</li>',
       cmp_good_tag: 'من بعد · مع M84 Patch',
       cmp_good_title: 'تعديل بصري واحد ← باتش نقي واحد',
-      cmp_good_list: '<li>✓ تعديل مباشر فوق <code>localhost</code> (Next.js, Vite, React) أولا أي موقع لايف.</li><li>✓ كيقرا أوتوماتيكياً متغيرات <code>:root</code> وكيزيد صناعة الألوان و dégradés.</li><li>✓ برومبت <code># Visual UI Patch</code> نقي : زيرو ستايل inline، شبكة 8px، توحيد الديزاين سيستيم.</li><li>✓ تراجع Undo/Redo ذكي ووضع المعاينة التفاعلية (<code>P</code> أولا شد <code>Space</code>).</li>',
+      cmp_good_list: '<li>✓ تعديل مباشر فوق <code>localhost</code> <span class="ltr">(Next.js, Vite, React)</span> أولا أي موقع لايف.</li><li>✓ كيقرا أوتوماتيكياً متغيرات <code>:root</code> وكيزيد صناعة الألوان والتدرجات.</li><li>✓ برومبت <code style="white-space:nowrap"># Visual UI Patch</code> نقي : زيرو ستايل inline، شبكة 8px، توحيد الديزاين سيستيم.</li><li>✓ تراجع <span class="ltr">Undo/Redo</span> ذكي ووضع المعاينة التفاعلية (<code class="ltr">P</code> أولا شد <code class="ltr">Space</code>).</li>',
       steps_kicker: 'كيفاش كتخدم فـ 4 مراحل',
       steps_title: 'شوف M84 Patch خدام فالواقع',
       steps_sub: 'صور حقيقية من Playground التفاعلي. كليكي على أي صورة باش تكبرها.',
       s1_title: 'حل M84 Patch فوق أي صفحة ويب',
-      s1_desc: 'بكليك واحد على إضافة Chrome أولا بالاختصار <code>Alt+E</code>. الأداة معزولة 100% وسط <strong>Shadow DOM</strong> يعني ما عمرها تخسر Tailwind ولا CSS ديال السيت.',
+      s1_desc: 'بكليك واحد على إضافة Chrome أولا بالاختصار <code>Alt+Shift+M</code>. الأداة معزولة 100% وسط <strong class="ltr">Shadow DOM</strong> يعني ما عمرها تخسر <span class="ltr">Tailwind</span> ولا <span class="ltr">CSS</span> ديال السيت.',
       s1_kbd: 'معاينة تفاعلية',
-      s2_title: 'اختار العنصر، تنقل فـ DOM وعدل ألوان :root',
-      s2_desc: 'كليكي على أي عنصر باش يجيب ليك <strong>Selector CSS فريد</strong>، تنقل بين Parent و Child، جر الأرقام بالماوس (<code>Shift = ×10</code>)، بدل ترتيب البلوكات وخدم بألوان <code>:root</code> ديالك.',
+      s2_title: 'اختار العنصر، تنقل فـ <span class="ltr">DOM</span> وعدل ألوان <code>:root</code>',
+      s2_desc: 'كليكي على أي عنصر باش يجيب ليك <strong>Selector CSS فريد</strong>، تنقل بين <span class="ltr">Parent</span> و <span class="ltr">Child</span>، جر الأرقام بالماوس <span class="ltr">(<code>Shift = ×10</code>)</span>، بدل ترتيب البلوكات وخدم بألوان <code>:root</code> ديالك.',
       s2_k1: 'تحديد', s2_k2: 'نص', s2_k3: 'ترتيب DOM',
-      s3_title: 'طبق ماسكات ريسبونسيف، أشكال و Code { }',
-      s3_desc: 'طبق 9 ماسكات <code>clip-path</code> بالـ <code>%</code> (قوس، مائل، دائرة، Blob…)، ارسم أشكال <strong>Guide / Real</strong> بـ <code>S</code>، أولا جرب <strong>CSS لايف</strong> فـ <code>Code { }</code>.',
+      s3_title: 'طبق ماسكات ريسبونسيف، أشكال و <span class="ltr">Code { }</span>',
+      s3_desc: 'طبق 9 ماسكات <code>clip-path</code> بالـ <code>%</code> (قوس، مائل، دائرة، <span class="ltr">Blob…</span>)، ارسم أشكال <strong class="ltr">Guide / Real</strong> بـ <code>S</code>، أولا جرب <strong>CSS لايف</strong> فـ <code>Code { }</code>.',
       s3_k1: 'أشكال Guide/Real', s3_k2: 'ملاحظة', s3_k3: 'منطقة Zone',
-      s4_title: 'كوبي <code># Visual UI Patch</code> ولصقو فأي AI',
-      s4_desc: 'زيد ملاحظة حرة إلا بغيتي، كوبي الباتش المنظم ولصقو فـ <strong>ChatGPT (GPT), Claude, Antigravity, Cursor, Windsurf, Gemini, Copilot أولا أي أداة AI</strong>.',
+      s4_title: 'كوبي <code style="white-space:nowrap"># Visual UI Patch</code> ولصقو فأي AI',
+      s4_desc: 'زيد ملاحظة حرة إلا بغيتي، كوبي الباتش المنظم ولصقو فـ <strong class="ltr">ChatGPT (GPT), Claude, Antigravity, Cursor, Windsurf, Gemini, Copilot</strong> أولا أي أداة ذكاء اصطناعي.',
       s4_k1: 'تراجع Undo', s4_k2: 'نسخ الباتش',
       feat_kicker: 'أدوات كاملة فبلاصة وحدة',
       feat_title: 'مصاوبة من طرف Product Designer ومؤمنة للويب الحديث',
-      f1_t: 'عزل 100% بـ Shadow DOM',
-      f1_d: 'عزل كامل للستايلات فوق Next.js, Vite, Tailwind وأي موقع خدام فالإنتاج.',
-      f2_t: 'ألوان :root و Dégradés',
+      f1_t: 'عزل 100% بـ <span class="ltr">Shadow DOM</span>',
+      f1_d: 'عزل كامل للستايلات فوق <span class="ltr">Next.js, Vite, Tailwind</span> وأي موقع خدام فالإنتاج.',
+      f2_t: 'ألوان <code>:root</code> و <span class="ltr">Gradients</span>',
       f2_d: 'قراءة أوتوماتيكية لألوان السيت مع إمكانية صناعة وتخزين ألوان وتدرجات جديدة.',
-      f3_t: 'أشكال وماسكات Guide / Real',
-      f3_d: '9 ماسكات <code>clip-path</code> ريسبونسيف وأشكال موجهة تقدر تبدلها بين Guide و Real.',
+      f3_t: 'أشكال وماسكات <span class="ltr">Guide / Real</span>',
+      f3_d: '9 ماسكات <code>clip-path</code> ريسبونسيف وأشكال موجهة تقدر تبدلها بين <span class="ltr">Guide</span> و <span class="ltr">Real</span>.',
       f4_t: 'CSS لايف ومواصفات JS',
-      f4_d: 'معاينة CSS لايف ومواصفات أنيميشن كتحترم <code>prefers-reduced-motion</code> بلا <code>eval</code>.',
-      f5_t: 'ملاحظات Pins و Zones بـ Ctrl+V',
-      f5_d: 'حط ملاحظات لاصقة فالعناصر أولا جمع مجموعة عناصر بـ Zone ولصق صور الإلهام مباشرة.',
+      f4_d: 'معاينة <span class="ltr">CSS</span> لايف ومواصفات أنيميشن كتحترم <code>prefers-reduced-motion</code> بلا <code>eval</code>.',
+      f5_t: 'ملاحظات <span class="ltr">Pins</span> و <span class="ltr">Zones</span> بـ <code>Ctrl+V</code>',
+      f5_d: 'حط ملاحظات لاصقة فالعناصر أولا جمع مجموعة عناصر بـ <span class="ltr">Zone</span> ولصق صور الإلهام مباشرة.',
       f6_t: 'خدام مع كاع أدوات AI',
-      f6_d: 'متوافق مع <strong>ChatGPT (GPT)</strong>، <strong>Claude</strong>، <strong>Antigravity</strong>، <strong>Cursor</strong>، <strong>Windsurf</strong>، <strong>Copilot</strong>، <strong>Gemini</strong>، <strong>v0</strong>، <strong>Bolt</strong>، <strong>Lovable</strong>…',
+      f6_d: 'متوافق مع <strong class="ltr">ChatGPT (GPT) · Claude · Antigravity · Cursor · Windsurf · Copilot · Gemini · v0 · Bolt · Lovable</strong> وغيرهم.',
       os_kicker: 'Open Source · GitHub',
       os_title: '100% مفتوح المصدر، شفاف وتقدر تطور عليه',
-      os_sub: 'الكود كامل، إضافة Chrome MV3 و Skill ديال الذكاء الاصطناعي منشورين برخصة MIT لمجتمع Product و UX/UI.',
+      os_sub: 'الكود كامل، إضافة <span class="ltr">Chrome MV3</span> و <span class="ltr">AI Skill</span> منشورين برخصة <span class="ltr">MIT</span> لمجتمع <span class="ltr">Product &amp; UX/UI</span>.',
       os_btn: 'حل فـ GitHub ↗',
       inst_kicker: 'بداية سريعة',
       inst_title: 'جوج طرق باش تخدم بـ M84 Patch',
-      inst_sub: 'كود واحد منظم كيعطي إضافة Chrome MV3 و Skill مستقل للذكاء الاصطناعي.',
+      inst_sub: 'كود واحد منظم كيعطي إضافة <span class="ltr">Chrome MV3</span> و <span class="ltr">AI Skill</span> مستقل.',
       i1_tag: 'موصى به · localhost والمواقع اللايف',
       i1_t: 'إضافة Chrome <span class="ltr">(Manifest V3)</span>',
       i1_d: 'خدامة فـ <span class="ltr">Chrome, Brave, Edge &amp; Arc</span>. بلا ما تبدل والو فالكود ديالك. صلاحيات خفيفة وآمنة <span class="ltr">(<code>activeTab</code> + <code>scripting</code>)</span>.',
       i1_dl: '⬇ تحميل إضافة Chrome <span class="ltr">(.zip)</span>',
-      i1_steps: '<li>حمل وفك الضغط على <code>m84-patch-chrome-extension.zip</code></li><li>حل <code>chrome://extensions</code> فـ <span class="ltr">Chrome / Brave / Edge / Arc</span></li><li>فعل <strong class="ltr">Developer mode</strong> (الفوق على اليمين)</li><li>كليكي على <strong class="ltr">Load unpacked</strong> واختار الدوسي اللي فكيتي</li><li>ورك على <code>Alt+E</code> أولا كليكي على أيقونة <strong>M84</strong> فوق أي صفحة</li>',
-      i2_tag: 'ملفات HTML · Claude / Antigravity',
+      i1_steps: '<li>حمل وفك الضغط على <code>m84-patch-chrome-extension.zip</code></li><li>حل <code>chrome://extensions</code> فـ <span class="ltr">Chrome / Brave / Edge / Arc</span></li><li>فعل <strong class="ltr">Developer mode</strong> (الفوق على اليمين)</li><li>كليكي على <strong class="ltr">Load unpacked</strong> واختار الدوسي اللي فكيتي</li><li>ورك على <code>Alt+Shift+M</code> أولا كليكي على أيقونة <strong>M84</strong> فوق أي صفحة</li>',
+      i2_tag: 'ملفات <span class="ltr">HTML · Claude / Antigravity</span>',
       i2_t: 'Skill مستقل <span class="ltr">(.zip + SKILL.md)</span>',
       i2_d: 'أدخل <code>m84-patch-skill.zip</code> فـ <span class="ltr">Claude.ai</span> أولا حطو فمجلد skills ديال <span class="ltr">Antigravity / Cursor / Windsurf</span>.',
       i2_dl: '⬇ تحميل AI Skill <span class="ltr">(.zip)</span>',
       iv_title: 'دليل التثبيت بالصور فـ Chrome (30 ثانية)',
-      iv_sub: 'تبع هاد 4 مراحل بالصور باش تركب M84 Patch فـ Chrome و Brave و Edge و Arc. كليكي على أي صورة باش تكبرها.',
+      iv_sub: 'تبع هاد 4 مراحل بالصور باش تركب <span class="ltr">M84 Patch</span> فـ <span class="ltr">Chrome / Brave / Edge / Arc</span>. كليكي على أي صورة باش تكبرها.',
       iv1_t: 'حمل وفك الضغط على الإضافة',
-      iv1_d: 'كليكي على <strong>تحميل إضافة Chrome (.zip)</strong> الفوق وفك الضغط باش يخرج ليك الدوسي اللي فيه <code>manifest.json</code>.',
-      iv2_t: 'حل <code>chrome://extensions</code> وفعل Developer mode',
-      iv2_d: 'كتب <code>chrome://extensions</code> فـ شريط العنوان وشعل الزر ديال <strong>Developer mode</strong> الفوق على اليمين.',
-      iv3_t: 'كليكي على "Load unpacked" واختار الدوسي',
-      iv3_d: 'اختار الدوسي <code>m84-patch-chrome-extension/</code> اللي فكيتي، وغادي تبان M84 Patch v2.0.0 خدامة مباشرة.',
-      iv4_t: 'ثبت الأيقونة وورك على <code>Alt+E</code>',
-      iv4_d: 'ثبت أيقونة <strong>M84 Patch</strong> فـ شريط المتصفح وورك على <code>Alt+E</code> فوق أي <code>localhost</code> أولا موقع لايف.',
+      iv1_d: 'كليكي على <strong>تحميل إضافة Chrome <span class="ltr">(.zip)</span></strong> الفوق وفك الضغط باش يخرج الدوسي اللي فيه <code>manifest.json</code>.',
+      iv2_t: 'حل <code>chrome://extensions</code> وفعل <span class="ltr">Developer mode</span>',
+      iv2_d: 'كتب <code>chrome://extensions</code> فـ شريط العنوان وشعل الزر ديال <strong class="ltr">Developer mode</strong> الفوق على اليمين.',
+      iv3_t: 'كليكي على <span class="ltr">"Load unpacked"</span> واختار الدوسي',
+      iv3_d: 'اختار الدوسي <code>m84-patch-chrome-extension/</code> اللي فكيتي، وغادي تبان <span class="ltr">M84 Patch v2.1.0</span> خدامة مباشرة.',
+      iv4_t: 'ثبت الأيقونة وورك على <code>Alt+Shift+M</code>',
+      iv4_d: 'ثبت أيقونة <strong class="ltr">M84 Patch</strong> فـ شريط المتصفح وورك على <code>Alt+Shift+M</code> فوق أي <code>localhost</code> أولا موقع لايف.',
       au_eyebrow: 'Open Source · مجتمع Product و UX/UI',
       au_title: 'من تطوير Moslih84',
-      au_desc: '<strong>M84 Patch</strong> مشروع مفتوح المصدر برخصة <strong>MIT</strong> باش يعاون Product Designers و UX/UI Designers و Vibecoders يطورو واجهات احترافية بسرعة مع كود نقي.',
+      au_desc: '<strong class="ltr">M84 Patch</strong> مشروع مفتوح المصدر برخصة <strong class="ltr">MIT</strong> باش يعاون <span class="ltr">Product Designers</span> و <span class="ltr">UX/UI Designers</span> و <span class="ltr">Vibecoders</span> يطورو واجهات احترافية بسرعة مع كود نقي.',
       au_site: 'زور الموقع ديال Moslih84 ↗',
       au_gh: 'شوف فـ GitHub ↗',
       au_play: 'حل Playground',
       ft_mit: 'مفتوح المصدر (MIT)',
-      ft_right: 'من تطوير <a href="https://moslih84.vercel.app" target="_blank" rel="noopener noreferrer" style="color:#5cb8ff;font-weight:600">Moslih84</a> · <a href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" style="color:var(--text)">GitHub</a> · <a href="./demo.html" style="color:var(--text)">Playground لايف</a>'
+      ft_right: 'من تطوير <a href="https://moslih84.vercel.app" target="_blank" rel="noopener noreferrer" style="color:#5cb8ff;font-weight:600" class="ltr">Moslih84</a> · <a href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" style="color:var(--text)" class="ltr">GitHub</a> · <a href="./demo.html" style="color:var(--text)">جرب لايف</a>'
     };
 
     const EN_CACHE = {};
