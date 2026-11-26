@@ -955,9 +955,10 @@
     }
     function showDesktopOnlyToast() {
       const isAr = document.documentElement.lang === 'ar-MA';
-      toastTitle.textContent = isAr ? 'للحاسوب فقط (Desktop Only)' : 'Desktop only';
+      toast.dir = isAr ? 'rtl' : 'ltr';
+      toastTitle.textContent = isAr ? 'خدام غير فالبيسي فقط' : 'Desktop only';
       toastMsg.innerHTML = isAr
-        ? 'التعديل البصري فـ <strong class="ltr">M84 Patch</strong> خدام غير فمتصفحات الحاسوب (<span class="ltr">Chrome, Brave, Edge, Arc</span>). حل <span class="ltr">m84patch.vercel.app</span> من البيسي باش تجرب Playground.'
+        ? 'التعديل البصري فـ <strong class="ltr">M84 Patch</strong> مصاوب غير للمتصفحات ديال البيسي <span class="ltr">(Chrome, Brave, Edge, Arc)</span>. حل <strong class="ltr">m84patch.vercel.app</strong> من البيسي ديالك باش تجرب Playground.'
         : 'Visual UI editing in <strong>M84 Patch</strong> is designed for desktop browsers (Chrome, Brave, Edge, Arc). Open <strong>m84patch.vercel.app</strong> on your computer to try the Playground.';
       toast.classList.add('show');
       toast.setAttribute('aria-hidden', 'false');

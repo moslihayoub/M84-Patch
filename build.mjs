@@ -249,10 +249,10 @@ function buildDemoHtml(scriptBlock) {
       const isAr = saved === 'ar-MA' || (!saved && langs.some(l => l === 'ar' || l.startsWith('ar-')));
       if (isAr) {
         gate.dir = 'rtl';
-        document.getElementById('m84-gate-title').textContent = 'متوفر للحاسوب فقط (Desktop Only)';
-        document.getElementById('m84-gate-desc').innerHTML = 'التعديل البصري فـ <strong dir="ltr">M84 Patch</strong> خدام غير فمتصفحات الحاسوب (<span dir="ltr">Chrome, Brave, Edge, Arc</span>). حل <strong dir="ltr">m84patch.vercel.app/demo</strong> من البيسي باش تجرب Playground التفاعلي.';
-        document.getElementById('m84-gate-back').textContent = 'الرجوع لصفحة M84 Patch';
-        document.getElementById('m84-gate-copy').textContent = 'نسخ الرابط باش تحلو فالبيسي';
+        document.getElementById('m84-gate-title').textContent = 'خدام غير فالبيسي فقط';
+        document.getElementById('m84-gate-desc').innerHTML = 'التعديل البصري فـ <strong dir="ltr">M84 Patch</strong> مصاوب غير للمتصفحات ديال البيسي <span dir="ltr">(Chrome, Brave, Edge, Arc)</span>. حل <strong dir="ltr">m84patch.vercel.app/demo</strong> من البيسي ديالك باش تجرب Playground التفاعلي.';
+        document.getElementById('m84-gate-back').textContent = 'الرجوع لصفحة M84 Patch →';
+        document.getElementById('m84-gate-copy').textContent = 'كوبي الرابط باش تحلو فالبيسي';
       }
       gate.classList.add('show');
       document.body.style.overflow = 'hidden';
@@ -263,7 +263,7 @@ function buildDemoHtml(scriptBlock) {
         const url = location.href;
         if (navigator.clipboard && navigator.clipboard.writeText) {
           navigator.clipboard.writeText(url).then(function () {
-            cpBtn.textContent = isAr ? '✓ تم نسخ الرابط' : '✓ Link copied!';
+            cpBtn.textContent = isAr ? '✓ تكوبا الرابط!' : '✓ Link copied!';
           }).catch(function () {});
         }
       });
