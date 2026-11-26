@@ -2,7 +2,7 @@
 
 > **Open-Source Visual UI Editor & AI Patch Engine for Product & UX/UI Designers** — *Point. Tweak. Copy `# Patch visuel UI`. Zero inline CSS.*
 >
-> **Live Site** : [m84-patch.vercel.app](https://m84-patch.vercel.app) · **Live Playground** : [m84-patch.vercel.app/demo.html](https://m84-patch.vercel.app/demo.html) · **Licence** : MIT · **Créé par** : [Moslih84](https://moslih84.com)
+> **Live Site** : [m84-patch.vercel.app](https://m84-patch.vercel.app) · **Live Playground** : [m84-patch.vercel.app/demo.html](https://m84-patch.vercel.app/demo.html) · **Licence** : MIT · **Créé par** : [Moslih84](https://moslih84.vercel.app)
 
 ![M84 Patch Preview](docs/assets/step-2-inspect.png)
 
@@ -71,6 +71,6 @@ npm run build
 
 ## Auteur & Licence
 
-- **Créé par [Moslih84](https://moslih84.com)** (Ayoub Moslih — Product & UX/UI Designer)
+- **Créé par [Moslih84](https://moslih84.vercel.app)** (Ayoub Moslih — Product & UX/UI Designer)
 - **Site officiel** : [https://m84-patch.vercel.app](https://m84-patch.vercel.app)
 - **Licence** : [MIT](LICENSE) — Libre d'utilisation, modification et partage.

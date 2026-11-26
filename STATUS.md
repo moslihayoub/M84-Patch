@@ -2,7 +2,7 @@
 
 > **Dernière mise à jour** : 2026-11-26 09:33 UTC
 > **Version** : `2.0.0` (Open Source · Licence MIT)
-> **Auteur** : [Moslih84](https://moslih84.com)
+> **Auteur** : [Moslih84](https://moslih84.vercel.app)
 > **Statut** : Renommé en **M84 Patch** — Prêt pour publication Open Source (Extension Chrome MV3 + Skill `.zip` + Landing Page + Playground + 4 captures réelles)
 
 ## Architecture du projet (`standalone_projects/m84-patch`)
