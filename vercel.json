@@ -1,4 +1,6 @@
 {
+  "installCommand": "true",
+  "buildCommand": "node build.mjs",
   "outputDirectory": "docs",
   "cleanUrls": true,
   "headers": [
