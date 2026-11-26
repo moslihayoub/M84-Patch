@@ -117,6 +117,8 @@ function buildDemoHtml(scriptBlock) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <meta name="theme-color" content="#09090b">
   <title>M84 Patch — Interactive Visual Playground</title>
   <style>
     :root {
@@ -400,6 +402,7 @@ function main() {
     demoHtml.replace(/\.\.\/docs\/index\.html/g, './index.html'),
     'utf8'
   );
+  fs.writeFileSync(path.join(ROOT, 'docs', 'apple-touch-icon.png'), createIconPng(128));
 
   console.log(`M84 Patch build OK:`);
   console.log(`  - Chrome Ext MV3 : ${DIST_EXT} (${(extCode.length / 1024).toFixed(1)} KB)`);
