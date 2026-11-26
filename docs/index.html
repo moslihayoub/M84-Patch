@@ -342,6 +342,31 @@
     .lb.show { display: flex; }
     .lb img { max-width: min(1240px, 100%); max-height: 90vh; border-radius: 12px; border: 1px solid var(--border-strong); }
 
+    /* Mobile Desktop-Only Toast */
+    .m84-toast {
+      position: fixed; left: 50%; bottom: 20px; z-index: 260;
+      width: min(390px, calc(100vw - 24px));
+      transform: translate(-50%, 24px); opacity: 0; pointer-events: none;
+      background: #14141b; border: 1px solid rgba(13, 153, 255, .55);
+      border-radius: 14px; padding: 14px 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .75);
+      display: flex; align-items: flex-start; gap: 12px;
+      transition: transform .24s cubic-bezier(.22, 1, .36, 1), opacity .22s ease;
+    }
+    .m84-toast.show { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
+    .m84-toast-ic {
+      width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+      background: var(--brand-soft); border: 1px solid rgba(13, 153, 255, .4);
+      color: #7dd3fc; display: grid; place-items: center; font-size: 16px;
+    }
+    .m84-toast-body { flex: 1; min-width: 0; }
+    .m84-toast-title { font-size: 13.5px; font-weight: 700; color: var(--text); margin: 0 0 3px; }
+    .m84-toast-msg { font-size: 12.5px; color: var(--muted); margin: 0; line-height: 1.5; }
+    .m84-toast-close {
+      background: transparent; border: 0; color: var(--muted); font-size: 18px;
+      line-height: 1; cursor: pointer; padding: 2px 4px; flex-shrink: 0;
+    }
+
     @media (max-width: 900px) {
       .nav-links, .nav-cta { display: none; }
       .nav-burger { display: inline-flex; }
@@ -745,6 +770,14 @@
   </footer>
 
   <div class="lb" id="lb"><img src="" alt="Zoomed preview"></div>
+  <div class="m84-toast" id="m84-toast" role="status" aria-live="polite" aria-hidden="true">
+    <div class="m84-toast-ic" aria-hidden="true">💻</div>
+    <div class="m84-toast-body">
+      <p class="m84-toast-title" id="m84-toast-title">Desktop only</p>
+      <p class="m84-toast-msg" id="m84-toast-msg">M84 Patch visual editing is available on desktop browsers only. Open this page on your computer to test the Playground.</p>
+    </div>
+    <button type="button" class="m84-toast-close" id="m84-toast-close" aria-label="Close">&times;</button>
+  </div>
   <script>
     const DARIJA = {
       nav_why: 'علاش',
@@ -902,7 +935,43 @@
       if (e.key === 'Escape') {
         lb.classList.remove('show');
         setDrawer(false);
+        hideToast();
       }
+    });
+
+    // Desktop-only guard for Interactive Playground on mobile devices
+    const toast = document.getElementById('m84-toast');
+    const toastTitle = document.getElementById('m84-toast-title');
+    const toastMsg = document.getElementById('m84-toast-msg');
+    const toastClose = document.getElementById('m84-toast-close');
+    let toastTimer = null;
+    const isMobileDevice = () =>
+      window.matchMedia('(max-width: 900px), (pointer: coarse)').matches ||
+      /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    function hideToast() {
+      toast.classList.remove('show');
+      toast.setAttribute('aria-hidden', 'true');
+      clearTimeout(toastTimer);
+    }
+    function showDesktopOnlyToast() {
+      const isAr = document.documentElement.lang === 'ar-MA';
+      toastTitle.textContent = isAr ? 'للحاسوب فقط (Desktop Only)' : 'Desktop only';
+      toastMsg.innerHTML = isAr
+        ? 'التعديل البصري فـ <strong class="ltr">M84 Patch</strong> خدام غير فمتصفحات الحاسوب (<span class="ltr">Chrome, Brave, Edge, Arc</span>). حل <span class="ltr">m84patch.vercel.app</span> من البيسي باش تجرب Playground.'
+        : 'Visual UI editing in <strong>M84 Patch</strong> is designed for desktop browsers (Chrome, Brave, Edge, Arc). Open <strong>m84patch.vercel.app</strong> on your computer to try the Playground.';
+      toast.classList.add('show');
+      toast.setAttribute('aria-hidden', 'false');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(hideToast, 5500);
+    }
+    toastClose.addEventListener('click', hideToast);
+    document.querySelectorAll('a[href*="demo.html"], a[href="/demo"]').forEach(link => {
+      link.addEventListener('click', e => {
+        if (!isMobileDevice()) return;
+        e.preventDefault();
+        setDrawer(false);
+        showDesktopOnlyToast();
+      });
     });
   </script>
 </body>

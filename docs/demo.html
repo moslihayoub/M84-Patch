@@ -81,9 +81,76 @@
     .foot-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
     @media (max-width: 860px) { .hero-grid, .bento, .pricing { grid-template-columns: 1fr; } .hero h1 { font-size: 34px; } nav { display: none; } }
     @media (max-width: 520px) { .container { padding: 0 16px; } .topbar-inner { gap: 10px; } .logo { font-size: 14px; } .btn { padding: 9px 13px; font-size: 13px; } }
+    .m84-mobile-gate {
+      position: fixed; inset: 0; z-index: 999999;
+      background: #09090b; color: #f4f4f5;
+      display: none; align-items: center; justify-content: center; padding: 24px;
+    }
+    .m84-mobile-gate.show { display: flex; }
+    .m84-gate-card {
+      width: min(420px, 100%); background: #121216; border: 1px solid #27272f;
+      border-radius: 20px; padding: 28px 24px; text-align: center;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, .7);
+    }
+    .m84-gate-ic {
+      width: 52px; height: 52px; margin: 0 auto 16px; border-radius: 14px;
+      background: linear-gradient(135deg, #0d99ff, #38bdf8); color: #ffffff;
+      display: grid; place-items: center; font-weight: 900; font-size: 24px;
+    }
+    .m84-gate-card h1 { margin: 0 0 10px; font-size: 21px; color: #f4f4f5; }
+    .m84-gate-card p { margin: 0 0 22px; font-size: 14.5px; color: #a1a1aa; line-height: 1.6; }
+    .m84-gate-actions { display: flex; flex-direction: column; gap: 10px; }
+    .m84-gate-actions a, .m84-gate-actions button {
+      width: 100%; min-height: 44px; border-radius: 10px; font-weight: 600; font-size: 14px;
+      display: inline-flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid transparent;
+    }
+    .m84-gate-pri { background: #0d99ff; color: #ffffff; }
+    .m84-gate-sec { background: #18181d; border-color: #3f3f4a; color: #f4f4f5; }
   </style>
 </head>
 <body>
+  <div class="m84-mobile-gate" id="m84-mobile-gate" role="dialog" aria-modal="true" aria-labelledby="m84-gate-title">
+    <div class="m84-gate-card">
+      <div class="m84-gate-ic">M</div>
+      <h1 id="m84-gate-title">Desktop Browser Required</h1>
+      <p id="m84-gate-desc">M84 Patch visual UI editing is designed for desktop browsers (Chrome, Brave, Edge, Arc). Open <strong>m84patch.vercel.app/demo</strong> on your computer to try the Interactive Playground.</p>
+      <div class="m84-gate-actions">
+        <a class="m84-gate-pri" id="m84-gate-back" href="./index.html">← Back to M84 Patch</a>
+        <button type="button" class="m84-gate-sec" id="m84-gate-copy">Copy link for desktop</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const isMobile = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      if (!isMobile) return;
+      const gate = document.getElementById('m84-mobile-gate');
+      let saved = null;
+      try { saved = localStorage.getItem('m84-lp-lang'); } catch (_) {}
+      const langs = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || 'en']).map(l => String(l).toLowerCase());
+      const isAr = saved === 'ar-MA' || (!saved && langs.some(l => l === 'ar' || l.startsWith('ar-')));
+      if (isAr) {
+        gate.dir = 'rtl';
+        document.getElementById('m84-gate-title').textContent = 'متوفر للحاسوب فقط (Desktop Only)';
+        document.getElementById('m84-gate-desc').innerHTML = 'التعديل البصري فـ <strong dir="ltr">M84 Patch</strong> خدام غير فمتصفحات الحاسوب (<span dir="ltr">Chrome, Brave, Edge, Arc</span>). حل <strong dir="ltr">m84patch.vercel.app/demo</strong> من البيسي باش تجرب Playground التفاعلي.';
+        document.getElementById('m84-gate-back').textContent = 'الرجوع لصفحة M84 Patch';
+        document.getElementById('m84-gate-copy').textContent = 'نسخ الرابط باش تحلو فالبيسي';
+      }
+      gate.classList.add('show');
+      document.body.style.overflow = 'hidden';
+      window.__apexui = true;
+      window.__apexuiToggle = function () {};
+      const cpBtn = document.getElementById('m84-gate-copy');
+      cpBtn.addEventListener('click', function () {
+        const url = location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () {
+            cpBtn.textContent = isAr ? '✓ تم نسخ الرابط' : '✓ Link copied!';
+          }).catch(function () {});
+        }
+      });
+    })();
+  </script>
   <header class="topbar" id="demo-header">
     <div class="container topbar-inner">
       <a class="logo" href="./index.html">
