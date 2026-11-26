@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>M84 Patch — Éditeur visuel UI Open Source pour GPT, Claude, Antigravity &amp; Cursor | Moslih84</title>
+  <meta name="description" content="M84 Patch est un éditeur visuel UI Figma-like open source (Shadow DOM, Extension Chrome MV3 & Skill IA) créé par Moslih84 pour les Product & UX/UI Designers. Modifie tes maquettes sur localhost ou en ligne et exporte un # Patch visuel UI compatible ChatGPT (GPT), Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini et tous les outils IA.">
+  <meta name="keywords" content="M84 Patch, éditeur visuel UI, visual UI editor, Product Designer, UX UI Designer, Chrome extension MV3, AI patch prompt, ChatGPT, GPT, Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini, Shadow DOM, open source, Moslih84">
+  <meta name="author" content="Moslih84 (Ayoub Moslih)">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://m84-patch.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="M84 Patch">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:url" content="https://m84-patch.vercel.app/">
+  <meta property="og:title" content="M84 Patch — Éditeur visuel UI Open Source pour GPT, Claude, Antigravity & Cursor">
+  <meta property="og:description" content="Point. Tweak. Copy # Patch visuel UI. Éditeur visuel Shadow DOM (Chrome MV3 + Skill IA) pour Product & UX/UI Designers. Compatible GPT, Claude, Antigravity, Cursor, Windsurf, Gemini, v0, Bolt…">
+  <meta property="og:image" content="https://m84-patch.vercel.app/assets/step-2-inspect.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="M84 Patch — Visual UI Patcher Open Source par Moslih84">
+  <meta name="twitter:description" content="Modifie tes maquettes visuellement sur localhost ou prod et copie un # Patch visuel UI propre pour GPT, Claude, Antigravity, Cursor & tous les outils IA.">
+  <meta name="twitter:image" content="https://m84-patch.vercel.app/assets/step-2-inspect.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "M84 Patch",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Chrome, Web",
+    "url": "https://m84-patch.vercel.app/",
+    "codeRepository": "https://github.com/moslihayoub/M84-Patch",
+    "license": "https://opensource.org/licenses/MIT",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Moslih84", "url": "https://moslih84.com" },
+    "description": "Open-source visual UI editor (Shadow DOM, Chrome MV3 & AI Skill) that exports structured # Patch visuel UI prompts for ChatGPT (GPT), Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini and all AI coding tools."
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #09090b;
+      --surface: #121216;
+      --surface-2: #18181d;
+      --border: #27272f;
+      --border-strong: #3f3f4a;
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --brand: #0d99ff;
+      --brand-soft: rgba(13, 153, 255, .14);
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+    /* Nav */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(9, 9, 11, .82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; letter-spacing: -.02em; }
+    .brand-badge {
+      width: 32px; height: 32px; border-radius: 9px;
+      background: linear-gradient(135deg, #0d99ff, #38bdf8);
+      color: #09090b; display: grid; place-items: center; font-weight: 900; font-size: 12px;
+    }
+    .nav-links { display: flex; gap: 24px; font-size: 14px; color: var(--muted); }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta { display: flex; align-items: center; gap: 10px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 18px; border-radius: 10px; font-weight: 600; font-size: 14px;
+      border: 1px solid transparent; cursor: pointer; transition: transform .15s, background .15s, border-color .15s;
+    }
+    .btn-primary { background: var(--brand); color: #fff; }
+    .btn-primary:hover { background: #2aa6ff; transform: translateY(-1px); }
+    .btn-secondary { background: var(--surface-2); border-color: var(--border-strong); color: var(--text); }
+    .btn-secondary:hover { background: #23232b; border-color: #525260; }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+
+    /* Hero */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 84px 0 64px;
+      background: radial-gradient(60% 45% at 50% 0%, rgba(13, 153, 255, .18), transparent 70%);
+    }
+    .hero-center { text-align: center; max-width: 820px; margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px;
+      background: var(--brand-soft); border: 1px solid rgba(13, 153, 255, .35);
+      color: #7dd3fc; font-size: 12px; font-weight: 600; margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 5.2vw, 56px);
+      line-height: 1.08; letter-spacing: -.035em; margin: 0 0 18px; font-weight: 800;
+    }
+    .hero h1 span { color: #5cb8ff; }
+    .hero p { font-size: 18px; color: var(--muted); margin: 0 auto 30px; max-width: 650px; }
+    .hero-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+    .hero-meta { font-size: 13px; color: var(--muted); display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+    .hero-meta strong { color: var(--text); }
+
+    .browser-frame {
+      margin-top: 44px;
+      border-radius: 16px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      overflow: hidden;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, .65);
+    }
+    .browser-bar {
+      display: flex; align-items: center; gap: 8px; padding: 11px 16px;
+      background: #141418; border-bottom: 1px solid var(--border);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
+    .dot.r { background: #ef4444; } .dot.y { background: #f59e0b; } .dot.g { background: #10b981; }
+    .url-pill {
+      margin-left: 10px; flex: 1; max-width: 360px;
+      background: #0b0b0e; border: 1px solid var(--border); border-radius: 7px;
+      padding: 4px 12px; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted);
+    }
+    .browser-frame img { width: 100%; display: block; cursor: zoom-in; }
+
+    /* Sections */
+    .section { padding: 80px 0; border-top: 1px solid var(--border); }
+    .section-head { max-width: 680px; margin-bottom: 44px; }
+    .section-head .kicker { color: #5cb8ff; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 8px; }
+    .section-head h2 { font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -.025em; margin: 0 0 12px; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 16px; }
+
+    /* Compare */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 26px;
+    }
+    .card.highlight { border-color: rgba(13, 153, 255, .5); background: linear-gradient(180deg, rgba(13, 153, 255, .07), var(--surface)); }
+    .tag {
+      display: inline-block; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .tag.bad { background: rgba(239, 68, 68, .15); color: #fca5a5; }
+    .tag.good { background: rgba(16, 185, 129, .15); color: #6ee7b7; }
+    .list { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-direction: column; gap: 10px; color: var(--muted); font-size: 14px; }
+
+    /* Steps with screenshots */
+    .steps { display: flex; flex-direction: column; gap: 48px; }
+    .step-row { display: grid; grid-template-columns: 0.9fr 1.3fr; gap: 32px; align-items: center; }
+    .step-row.rev { grid-template-columns: 1.3fr 0.9fr; }
+    .step-row.rev .step-text { order: 2; }
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 34px; height: 34px; border-radius: 10px;
+      background: var(--brand-soft); border: 1px solid rgba(13, 153, 255, .4);
+      color: #7dd3fc; font-weight: 800; font-size: 14px; margin-bottom: 12px;
+    }
+    .step-text h3 { font-size: 22px; margin: 0 0 10px; letter-spacing: -.02em; }
+    .step-text p { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+    .kbd-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    kbd {
+      background: var(--surface-2); border: 1px solid var(--border-strong);
+      border-radius: 6px; padding: 3px 8px; font: 600 12px ui-monospace, monospace; color: var(--text);
+    }
+    .shot {
+      border-radius: 14px; border: 1px solid var(--border-strong);
+      overflow: hidden; background: var(--surface-2);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .45);
+    }
+    .shot img { width: 100%; display: block; cursor: zoom-in; transition: transform .25s ease; }
+    .shot:hover img { transform: scale(1.015); }
+
+    /* Bento Features */
+    .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feat h3 { margin: 12px 0 6px; font-size: 17px; }
+    .feat p { margin: 0; color: var(--muted); font-size: 14px; }
+    .feat-ic {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--surface-2); border: 1px solid var(--border-strong);
+      display: grid; place-items: center; color: #5cb8ff; font-weight: 800; font-size: 14px;
+    }
+
+    /* Install */
+    .install-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+    .code-box {
+      margin-top: 14px; padding: 14px; border-radius: 10px;
+      background: #0b0b0e; border: 1px solid var(--border);
+      font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: #cbd5e1;
+      overflow-x: auto;
+    }
+
+    /* Author */
+    .author-card {
+      display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;
+      padding: 34px; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(13, 153, 255, .12), rgba(16, 185, 129, .06) 60%, var(--surface));
+      border: 1px solid var(--border-strong);
+    }
+    .author-info { max-width: 620px; }
+    .author-info h2 { margin: 0 0 8px; font-size: 26px; letter-spacing: -.02em; }
+    .author-info p { margin: 0; color: var(--muted); font-size: 15px; }
+
+    footer { border-top: 1px solid var(--border); padding: 34px 0; color: var(--muted); font-size: 13px; }
+    .foot-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+
+    /* Lightbox */
+    .lb {
+      position: fixed; inset: 0; z-index: 200; background: rgba(0, 0, 0, .86);
+      display: none; align-items: center; justify-content: center; padding: 24px; cursor: zoom-out;
+    }
+    .lb.show { display: flex; }
+    .lb img { max-width: min(1240px, 100%); max-height: 90vh; border-radius: 12px; border: 1px solid var(--border-strong); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .compare, .step-row, .step-row.rev, .bento, .install-grid { grid-template-columns: 1fr; }
+      .step-row.rev .step-text { order: 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#">
+        <span class="brand-badge">M84</span>
+        <span>M84 Patch</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#why">Pourquoi</a>
+        <a href="#steps">Étapes</a>
+        <a href="#features">Fonctions</a>
+        <a href="#opensource">GitHub</a>
+        <a href="#install">Installer</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-secondary btn-sm" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer">GitHub Open Source ↗</a>
+        <a class="btn btn-primary btn-sm" href="./demo.html">Playground Live</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-center">
+        <span class="eyebrow">Open Source · Licence MIT · Extension Chrome MV3 + Skill IA</span>
+        <h1>L’éditeur visuel <span>Figma-like</span> qui parle à tes IA de code.</h1>
+        <p>Conçu pour les <strong>Product Designers</strong> et <strong>UX/UI Designers</strong> : ajuste tes maquettes directement sur <code>localhost</code>, un site live ou un artefact HTML, puis copie un <code># Patch visuel UI</code> propre — <strong>compatible avec tous les outils IA</strong> (ChatGPT / GPT, Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini, v0, Bolt, Lovable…).</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="./demo.html">Essayer le Playground interactif</a>
+          <a class="btn btn-secondary" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer">Code Open Source sur GitHub ↗</a>
+          <a class="btn btn-secondary" href="#install">Installer l’extension Chrome</a>
+        </div>
+        <div class="hero-meta">
+          <span><strong>100 %</strong> Shadow DOM</span>
+          <span><strong>0</strong> dépendance</span>
+          <span>Marche avec <strong>GPT · Claude · Antigravity · Cursor · Windsurf · Gemini · Copilot · etc.</strong></span>
+        </div>
+      </div>
+
+      <div class="browser-frame">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url-pill">localhost:3000 · M84 Patch actif (Alt+E)</span>
+        </div>
+        <img src="assets/step-2-inspect.png" alt="M84 Patch en action sur une page web avec panneau de propriétés et tokens :root" data-zoom>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="why">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Le problème résolu</div>
+        <h2>Fini les 15 prompts pour décaler un bloc ou changer un masque.</h2>
+        <p>Un designer pense visuellement. M84 Patch capture ton intention visuelle et la traduit en spécification structurée pour le code source.</p>
+      </div>
+      <div class="compare">
+        <div class="card">
+          <span class="tag bad">Avant · Sans M84 Patch</span>
+          <h3 style="margin:0 0 8px">Allers-retours textuels imprécis</h3>
+          <ul class="list">
+            <li>× Décrire quel bouton ou quelle carte modifier sans sélecteur unique.</li>
+            <li>× L'IA modifie un seul composant au lieu d'unifier le design system.</li>
+            <li>× Impossible de tester visuellement un masque <code>clip-path</code> ou un ordre DOM avant de prompter.</li>
+            <li>× Tokens <code>:root</code> ignorés ou remplacés par des couleurs codées en dur.</li>
+          </ul>
+        </div>
+        <div class="card highlight">
+          <span class="tag good">Après · Avec M84 Patch</span>
+          <h3 style="margin:0 0 8px">1 session visuelle → 1 Patch propre</h3>
+          <ul class="list">
+            <li>✓ Sélection directe sur <code>localhost</code> (Next.js, Vite, React) ou sur un site live/prod.</li>
+            <li>✓ Lecture automatique de tes variables CSS <code>:root</code> + création de dégradés.</li>
+            <li>✓ Export <code># Patch visuel UI</code> avec règles strictes : zéro inline, grille 8 px, WCAG 2.1 AA, unification par rôle.</li>
+            <li>✓ Undo/Redo transactionnel + mode Aperçu (<code>P</code> ou maintenir <code>Espace</code>).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="steps">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Workflow en 4 étapes</div>
+        <h2>Comment M84 Patch fonctionne en conditions réelles</h2>
+        <p>Captures réelles prises sur le Playground interactif. Clique sur une image pour l'agrandir.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step-row">
+          <div class="step-text">
+            <span class="step-num">01</span>
+            <h3>Ouvre l’éditeur sur n’importe quelle page</h3>
+            <p>Active M84 Patch d'un clic sur l'extension Chrome ou via le raccourci clavier. L'interface se monte dans un <strong>Shadow DOM</strong> étanche : aucun conflit avec Tailwind ou le CSS de ton app.</p>
+            <div class="kbd-row"><kbd>Alt + E</kbd><kbd>P</kbd><span>Aperçu interactif</span></div>
+          </div>
+          <div class="shot">
+            <img src="assets/step-1-open.png" alt="Étape 1 : Ouverture de M84 Patch avec toolbar flottante et panneau droit" data-zoom>
+          </div>
+        </div>
+
+        <div class="step-row rev">
+          <div class="step-text">
+            <span class="step-num">02</span>
+            <h3>Sélectionne, navigue dans le DOM et ajuste tes tokens</h3>
+            <p>Clique un élément pour obtenir son <strong>sélecteur CSS unique</strong>, naviguer Parent/Enfant, glisser les valeurs numériques au scrub (<code>Maj = ×10</code>), réordonner les blocs et piocher dans tes tokens <code>:root</code>.</p>
+            <div class="kbd-row"><kbd>V</kbd><span>Sélection</span><kbd>T</kbd><span>Texte</span><kbd>Alt + ←/→</kbd><span>Ordre DOM</span></div>
+          </div>
+          <div class="shot">
+            <img src="assets/step-2-inspect.png" alt="Étape 2 : Sélection d'élément avec cadre bleu, poignées et accordéons de propriétés" data-zoom>
+          </div>
+        </div>
+
+        <div class="step-row">
+          <div class="step-text">
+            <span class="step-num">03</span>
+            <h3>Applique des masques responsives, formes &amp; Code { }</h3>
+            <p>Applique 9 presets <code>clip-path</code> en <code>%</code> (Arc bas, Diagonale, Cercle, Blob…), dessine des formes <strong>Guide / Réel</strong> (<code>S</code>) ou teste du <strong>CSS live scopé</strong> dans l'accordéon <code>Code { }</code>.</p>
+            <div class="kbd-row"><kbd>S</kbd><span>Formes Guide/Réel</span><kbd>C</kbd><span>Pin</span><kbd>Z</kbd><span>Zone</span></div>
+          </div>
+          <div class="shot">
+            <img src="assets/step-3-mask.png" alt="Étape 3 : Masque Arc bas appliqué au Hero depuis l'accordéon Formes et masques" data-zoom>
+          </div>
+        </div>
+
+        <div class="step-row rev">
+          <div class="step-text">
+            <span class="step-num">04</span>
+            <h3>Copie le <code># Patch visuel UI</code> dans ton IA</h3>
+            <p>Ajoute une intention libre si besoin, puis copie le prompt structuré (Styles, Textes, Ordre DOM, Nouveaux tokens, Formes &amp; masques, Snippets Code, Annotations) et colle-le dans <strong>ChatGPT (GPT), Claude, Antigravity, Cursor, Windsurf, Gemini, Copilot ou tout autre outil IA</strong>.</p>
+            <div class="kbd-row"><kbd>Ctrl + Z</kbd><span>Undo transactionnel</span><kbd>1 clic</kbd><span>Copier le patch</span></div>
+          </div>
+          <div class="shot">
+            <img src="assets/step-4-patch.png" alt="Étape 4 : Modale d'export du Prompt Patch UI prêt à coller dans Claude, Antigravity ou Cursor" data-zoom>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Boîte à outils complète</div>
+        <h2>Pensé par un Product Designer, durci pour le web moderne</h2>
+      </div>
+      <div class="bento">
+        <div class="card feat">
+          <div class="feat-ic">SD</div>
+          <h3>100 % Shadow DOM</h3>
+          <p>Isolation CSS totale sur Next.js, Vite, Tailwind et sites en production. Zéro fuite de styles.</p>
+        </div>
+        <div class="card feat">
+          <div class="feat-ic">:r</div>
+          <h3>Tokens :root &amp; Dégradés</h3>
+          <p>Détection auto des variables CSS de la page + création de couleurs unies ou dégradés (fond et texte).</p>
+        </div>
+        <div class="card feat">
+          <div class="feat-ic">◈</div>
+          <h3>Masques &amp; Formes Guide/Réel</h3>
+          <p>9 masques <code>clip-path</code> responsives en <code>%</code> et annotations vectorielles basculables Guide / Réel.</p>
+        </div>
+        <div class="card feat">
+          <div class="feat-ic">{ }</div>
+          <h3>Code Live &amp; Spec JS</h3>
+          <p>CSS live scopé sans toucher au DOM + spec JS/animation exportée avec <code>prefers-reduced-motion</code> (zéro <code>eval</code>).</p>
+        </div>
+        <div class="card feat">
+          <div class="feat-ic">Z</div>
+          <h3>Pins &amp; Zones avec Ctrl+V</h3>
+          <p>Ancre des remarques sur un élément ou un groupe d'éléments et colle des captures d'inspiration directement.</p>
+        </div>
+        <div class="card feat">
+          <div class="feat-ic">AI</div>
+          <h3>Compatible TOUS les outils IA</h3>
+          <p>Marche avec <strong>ChatGPT (GPT)</strong>, <strong>Claude</strong>, <strong>Antigravity</strong>, <strong>Cursor</strong>, <strong>Windsurf</strong>, <strong>Copilot</strong>, <strong>Gemini</strong>, <strong>v0</strong>, <strong>Bolt</strong>, <strong>Lovable</strong>… Un seul format universel <code># Patch visuel UI</code>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="opensource">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Open Source · GitHub</div>
+        <h2>100 % Open Source, transparent et prêt à forker</h2>
+        <p>Tout le code source modulaire, l’extension Chrome MV3 et le Skill IA sont publiés sous licence MIT sur GitHub pour la communauté Product &amp; UX/UI.</p>
+      </div>
+      <div class="browser-frame" style="margin-top:0">
+        <div class="browser-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="url-pill">https://github.com/moslihayoub/M84-Patch</span>
+          <a class="btn btn-primary btn-sm" style="margin-left:auto" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer">Ouvrir sur GitHub ↗</a>
+        </div>
+        <img src="assets/github-repo.png" alt="Dépôt GitHub Open Source M84 Patch (moslihayoub/M84-Patch)" data-zoom>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="install">
+    <div class="container">
+      <div class="section-head">
+        <div class="kicker">Démarrage rapide</div>
+        <h2>2 façons d’utiliser M84 Patch</h2>
+        <p>Un seul code source modulaire compilé vers l'Extension Chrome MV3 et le Skill autonome.</p>
+      </div>
+      <div class="install-grid">
+        <div class="card">
+          <span class="tag good">Recommandé · localhost &amp; prod</span>
+          <h3 style="margin:0 0 8px">Extension Chrome Manifest V3</h3>
+          <p style="margin:0;color:var(--muted);font-size:14px">Zéro modification dans tes repos Git. Permissions minimales (<code>activeTab</code> + <code>scripting</code>).</p>
+          <div class="code-box">1. npm run build<br>2. Ouvrir chrome://extensions<br>3. Activer "Mode développeur"<br>4. Charger : dist/chrome-extension/<br>5. Appuyer sur Alt+E sur n'importe quel onglet</div>
+        </div>
+        <div class="card">
+          <span class="tag" style="background:var(--brand-soft);color:#7dd3fc">Artefacts HTML · Claude.ai &amp; Antigravity</span>
+          <h3 style="margin:0 0 8px">Skill autonome (.zip + SKILL.md)</h3>
+          <p style="margin:0;color:var(--muted);font-size:14px">Importe <code>m84-patch-skill.zip</code> dans Claude.ai ou utilise le skill global <code>apexui</code> dans Antigravity.</p>
+          <div class="code-box">dist/claude-skill/<br>├── SKILL.md           # Protocole # Patch visuel UI<br>├── m84-patch.html        # Bloc &lt;script data-m84-patch&gt;<br>└── m84-patch-skill.zip   # Prêt à importer</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="author-card">
+        <div class="author-info">
+          <span class="eyebrow" style="margin-bottom:12px">Open Source · Communauté Product &amp; UX/UI</span>
+          <h2>Créé par Moslih84</h2>
+          <p><strong>M84 Patch</strong> est publié en open source sous licence <strong>MIT</strong> pour aider les Product Designers et UX/UI Designers à itérer plus vite sur leurs maquettes HTML/React tout en gardant un code propre et fidèle au design system.</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn btn-primary" href="https://moslih84.com" target="_blank" rel="noopener noreferrer">Visiter le site de Moslih84 ↗</a>
+          <a class="btn btn-secondary" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer">Voir sur GitHub ↗</a>
+          <a class="btn btn-secondary" href="./demo.html">Ouvrir le Playground</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot-inner">
+      <span><strong>M84 Patch</strong> v2.0.0 · Open Source (MIT)</span>
+      <span>Créé par <a href="https://moslih84.com" target="_blank" rel="noopener noreferrer" style="color:#5cb8ff;font-weight:600">Moslih84</a> · <a href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" style="color:var(--text)">GitHub</a> · <a href="./demo.html" style="color:var(--text)">Playground Live</a></span>
+    </div>
+  </footer>
+
+  <div class="lb" id="lb"><img src="" alt="Aperçu agrandi"></div>
+  <script>
+    const lb = document.getElementById('lb'), lbImg = lb.querySelector('img');
+    document.querySelectorAll('[data-zoom]').forEach(img => {
+      img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('show'); });
+    });
+    lb.addEventListener('click', () => lb.classList.remove('show'));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('show'); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "M84 Patch — Visual UI Patcher",
+  "version": "2.0.0",
+  "description": "Éditeur visuel Figma-like (Shadow DOM) créé par Moslih84 pour Product & UX/UI Designers. Exporte un # Patch visuel UI pour Claude, Antigravity ou Cursor.",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_title": "Ouvrir / Fermer M84 Patch (Alt+E)",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "toggle-apexui": {
+      "suggested_key": {
+        "default": "Alt+E"
+      },
+      "description": "Ouvrir / Fermer ApexUI sur l'onglet actif"
+    }
+  }
+}
