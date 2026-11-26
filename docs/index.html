@@ -53,9 +53,10 @@
       --radius: 16px;
     }
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
     body {
       margin: 0;
+      overflow-x: clip;
       font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
@@ -71,9 +72,11 @@
       direction: ltr; unicode-bidi: isolate;
       background: rgba(255,255,255,.07); padding: 2px 6px; border-radius: 5px;
       font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; color: #7dd3fc;
+      overflow-wrap: anywhere;
     }
     .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
     .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+    .card, .step-row > *, .install-grid > *, .bento > *, .compare > *, .install-steps-grid > * { min-width: 0; }
 
     /* Nav */
     .nav {
@@ -87,11 +90,71 @@
     .brand-badge {
       width: 32px; height: 32px; border-radius: 9px;
       background: linear-gradient(135deg, #0d99ff, #38bdf8);
-      color: #09090b; display: grid; place-items: center; font-weight: 900; font-size: 12px;
+      color: #ffffff; display: grid; place-items: center; font-weight: 900; font-size: 16px;
+      line-height: 1;
     }
     .nav-links { display: flex; gap: 22px; font-size: 14px; color: var(--muted); }
     .nav-links a:hover { color: var(--text); }
     .nav-cta { display: flex; align-items: center; gap: 8px; }
+
+    /* Mobile Burger & Drawer */
+    .nav-burger {
+      display: none; align-items: center; justify-content: center;
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--surface-2); border: 1px solid var(--border-strong);
+      color: var(--text); cursor: pointer; padding: 0; flex-shrink: 0;
+      transition: background .15s, border-color .15s;
+    }
+    .nav-burger:hover { background: #23232b; border-color: #525260; }
+    .drawer-backdrop {
+      position: fixed; inset: 0; z-index: 140;
+      background: rgba(0, 0, 0, .68); backdrop-filter: blur(4px);
+      opacity: 0; pointer-events: none; transition: opacity .22s ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+    .drawer {
+      position: fixed; top: 0; bottom: 0; right: 0; z-index: 150;
+      width: min(310px, 86vw); background: #101015;
+      border-left: 1px solid var(--border-strong);
+      box-shadow: -20px 0 60px rgba(0, 0, 0, .65);
+      display: flex; flex-direction: column; padding: 18px 20px 24px; gap: 20px;
+      transform: translateX(100%); transition: transform .25s cubic-bezier(.22, 1, .36, 1);
+      overflow-y: auto;
+    }
+    html[dir="rtl"] .drawer {
+      right: auto; left: 0; border-left: 0; border-right: 1px solid var(--border-strong);
+      box-shadow: 20px 0 60px rgba(0, 0, 0, .65);
+      transform: translateX(-100%);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding-bottom: 14px; border-bottom: 1px solid var(--border);
+    }
+    .drawer-close {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: var(--surface-2); border: 1px solid var(--border-strong);
+      color: var(--text); font-size: 20px; line-height: 1; cursor: pointer;
+      display: grid; place-items: center;
+    }
+    .drawer-nav { display: flex; flex-direction: column; gap: 4px; }
+    .drawer-nav a {
+      padding: 11px 12px; border-radius: 10px; font-size: 15px; font-weight: 600;
+      color: var(--text); transition: background .15s;
+    }
+    .drawer-nav a:hover { background: var(--surface-2); }
+    .drawer-section-label {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--muted); margin-bottom: 8px;
+    }
+    html[dir="rtl"] .drawer-section-label { letter-spacing: 0; }
+    .drawer-lang .lang-sw { width: 100%; }
+    .drawer-lang .lang-sw button { flex: 1; padding: 9px 12px; font-size: 13px; }
+    .drawer-actions {
+      margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .drawer-actions .btn { width: 100%; min-height: 44px; }
 
     /* Language switcher */
     .lang-sw {
@@ -148,14 +211,15 @@
       direction: ltr; display: flex; align-items: center; gap: 8px; padding: 11px 16px;
       background: #141418; border-bottom: 1px solid var(--border);
     }
-    .dot { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #3f3f46; flex-shrink: 0; }
     .dot.r { background: #ef4444; } .dot.y { background: #f59e0b; } .dot.g { background: #10b981; }
     .url-pill {
-      margin-left: 10px; flex: 1; max-width: 380px;
+      margin-left: 10px; flex: 1; min-width: 0; max-width: 380px;
       background: #0b0b0e; border: 1px solid var(--border); border-radius: 7px;
       padding: 4px 12px; font: 12px ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--muted);
       overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
     }
+    .browser-bar .btn { flex-shrink: 0; }
     .browser-frame img { width: 100%; display: block; cursor: zoom-in; }
 
     /* Sections */
@@ -219,8 +283,37 @@
       margin-top: 14px; padding: 14px; border-radius: 10px;
       background: #0b0b0e; border: 1px solid var(--border);
       font: 12.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; color: #cbd5e1;
-      overflow-x: auto;
+      overflow-x: auto; max-width: 100%;
     }
+    .step-list {
+      margin: 14px 0 0; padding: 14px 16px 14px 32px; border-radius: 10px;
+      background: #0b0b0e; border: 1px solid var(--border);
+      color: #cbd5e1; font-size: 13.5px; line-height: 1.7;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    html[dir="rtl"] .step-list { padding: 14px 32px 14px 16px; }
+    .install-visual-head { margin: 44px 0 22px; }
+    .install-visual-head h3 { margin: 0 0 6px; font-size: 21px; letter-spacing: -.015em; }
+    .install-visual-head p { margin: 0; color: var(--muted); font-size: 14.5px; }
+    .install-steps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .install-step-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      overflow: hidden; display: flex; flex-direction: column;
+      transition: border-color .2s ease;
+    }
+    .install-step-card:hover { border-color: rgba(13, 153, 255, .45); }
+    .install-step-shot { background: #0c0c10; border-bottom: 1px solid var(--border); overflow: hidden; }
+    .install-step-shot img { width: 100%; height: auto; display: block; cursor: zoom-in; }
+    .install-step-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; }
+    .install-step-top { display: flex; align-items: center; gap: 10px; }
+    .install-step-badge {
+      display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--brand-soft); border: 1px solid rgba(13, 153, 255, .4);
+      color: #7dd3fc; font-weight: 800; font-size: 12px;
+    }
+    .install-step-body h4 { margin: 0; font-size: 15px; line-height: 1.35; }
+    .install-step-body p { margin: 0; color: var(--muted); font-size: 13.5px; line-height: 1.55; }
 
     /* Author */
     .author-card {
@@ -232,6 +325,7 @@
     .author-info { max-width: 620px; }
     .author-info h2 { margin: 0 0 8px; font-size: 26px; }
     .author-info p { margin: 0; color: var(--muted); font-size: 15px; }
+    .author-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
     footer { border-top: 1px solid var(--border); padding: 34px 0; color: var(--muted); font-size: 13px; }
     .foot-inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
@@ -245,9 +339,52 @@
     .lb img { max-width: min(1240px, 100%); max-height: 90vh; border-radius: 12px; border: 1px solid var(--border-strong); }
 
     @media (max-width: 900px) {
-      .nav-links { display: none; }
-      .compare, .step-row, .step-row.rev, .bento, .install-grid { grid-template-columns: 1fr; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: inline-flex; }
+      .compare, .step-row, .step-row.rev, .bento, .install-grid, .install-steps-grid { grid-template-columns: 1fr; }
       .step-row.rev .step-text { order: 0; }
+      .steps { gap: 36px; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 16px; }
+      .nav-inner { height: 60px; gap: 8px; }
+      .brand { font-size: 15px; gap: 9px; flex-shrink: 0; }
+      .brand-badge { width: 32px; height: 32px; font-size: 16px; border-radius: 9px; }
+
+      .hero { padding: 44px 0 40px; }
+      .eyebrow { font-size: 11.5px; padding: 6px 12px; margin-bottom: 16px; text-align: center; line-height: 1.4; }
+      .hero h1 { font-size: clamp(27px, 7.6vw, 38px); margin-bottom: 14px; }
+      .hero p { font-size: 15.5px; margin-bottom: 22px; }
+      .hero-actions { flex-direction: column; align-items: stretch; gap: 10px; }
+      .hero-actions .btn { width: 100%; min-height: 46px; }
+      .hero-meta { gap: 8px 14px; font-size: 12.5px; }
+
+      .browser-frame { margin-top: 28px; border-radius: 13px; }
+      .browser-bar { padding: 9px 12px; gap: 6px; }
+      .url-pill { margin-left: 6px; font-size: 11px; padding: 4px 8px; }
+
+      .section { padding: 52px 0; }
+      .section-head { margin-bottom: 28px; }
+      .section-head h2 { font-size: clamp(23px, 6.2vw, 30px); }
+      .section-head p { font-size: 14.5px; }
+      .card { padding: 20px; border-radius: 14px; }
+      .step-row { gap: 18px; }
+      .step-text h3 { font-size: 19px; }
+      .step-text p { font-size: 14.5px; }
+      .code-box { font-size: 12px; padding: 12px; }
+      .install-visual-head { margin: 32px 0 18px; }
+      .install-visual-head h3 { font-size: 18.5px; }
+      .install-step-body { padding: 14px 16px; }
+
+      .author-card { padding: 22px; gap: 18px; border-radius: 16px; }
+      .author-info h2 { font-size: 22px; }
+      .author-actions { width: 100%; flex-direction: column; }
+      .author-actions .btn { width: 100%; min-height: 44px; }
+
+      footer { padding: 26px 0; }
+      .foot-inner { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .lb { padding: 12px; }
     }
   </style>
 </head>
@@ -255,7 +392,7 @@
   <header class="nav">
     <div class="container nav-inner">
       <a class="brand" href="#">
-        <span class="brand-badge">M84</span>
+        <span class="brand-badge">M</span>
         <span class="ltr">M84 Patch</span>
       </a>
       <nav class="nav-links">
@@ -270,11 +407,48 @@
           <button type="button" data-lang="en" class="act">EN</button>
           <button type="button" data-lang="ar-MA">الدارجة</button>
         </div>
-        <a class="btn btn-secondary btn-sm" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" data-i18n="nav_gh_btn">GitHub ↗</a>
+        <a class="btn btn-secondary btn-sm nav-gh" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" data-i18n="nav_gh_btn">GitHub ↗</a>
         <a class="btn btn-primary btn-sm" href="./demo.html" data-i18n="nav_play_btn">Live Playground</a>
       </div>
+      <button type="button" class="nav-burger" id="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-drawer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
     </div>
   </header>
+
+  <div class="drawer-backdrop" id="drawer-backdrop" aria-hidden="true"></div>
+  <aside class="drawer" id="mobile-drawer" aria-hidden="true" aria-label="Mobile menu">
+    <div class="drawer-head">
+      <a class="brand" href="#">
+        <span class="brand-badge">M</span>
+        <span class="ltr">M84 Patch</span>
+      </a>
+      <button type="button" class="drawer-close" id="drawer-close" aria-label="Close menu">&times;</button>
+    </div>
+    <div class="drawer-lang">
+      <div class="drawer-section-label" data-i18n="dr_lang">Language</div>
+      <div class="lang-sw" role="group" aria-label="Language switcher">
+        <button type="button" data-lang="en" class="act">EN</button>
+        <button type="button" data-lang="ar-MA">الدارجة</button>
+      </div>
+    </div>
+    <nav class="drawer-nav">
+      <a href="#why" data-i18n="nav_why">Why</a>
+      <a href="#steps" data-i18n="nav_steps">Steps</a>
+      <a href="#features" data-i18n="nav_features">Features</a>
+      <a href="#opensource" data-i18n="nav_github">GitHub</a>
+      <a href="#install" data-i18n="nav_install">Install</a>
+    </nav>
+    <div class="drawer-actions">
+      <a class="btn btn-primary" href="./demo.html" data-i18n="nav_play_btn">Live Playground</a>
+      <a class="btn btn-secondary" href="./downloads/m84-patch-chrome-extension.zip" download="m84-patch-chrome-extension.zip" data-i18n="i1_dl">⬇ Download Chrome Extension (.zip)</a>
+      <a class="btn btn-secondary" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" data-i18n="nav_gh_btn">GitHub ↗</a>
+    </div>
+  </aside>
 
   <section class="hero">
     <div class="container">
@@ -462,7 +636,13 @@
           <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn btn-primary btn-sm" href="./downloads/m84-patch-chrome-extension.zip" download="m84-patch-chrome-extension.zip" data-i18n="i1_dl">⬇ Download Chrome Extension (.zip)</a>
           </div>
-          <div class="code-box" data-i18n="i1_steps">1. Download &amp; unzip m84-patch-chrome-extension.zip<br>2. Open chrome://extensions (Chrome / Brave / Edge)<br>3. Enable "Developer mode" (top right)<br>4. Click "Load unpacked" → select the unzipped folder<br>5. Press Alt+E (or click the M84 icon) on any tab</div>
+          <ol class="step-list" data-i18n="i1_steps">
+            <li>Download &amp; unzip <code>m84-patch-chrome-extension.zip</code></li>
+            <li>Open <code>chrome://extensions</code> (Chrome / Brave / Edge / Arc)</li>
+            <li>Enable <strong>Developer mode</strong> (top right)</li>
+            <li>Click <strong>Load unpacked</strong> → select the unzipped folder</li>
+            <li>Press <code>Alt+E</code> (or click the <strong>M84</strong> icon) on any tab</li>
+          </ol>
         </div>
         <div class="card">
           <span class="tag" style="background:var(--brand-soft);color:#7dd3fc" data-i18n="i2_tag">HTML Artifacts · Claude / Antigravity</span>
@@ -471,8 +651,63 @@
           <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn btn-secondary btn-sm" href="./downloads/m84-patch-skill.zip" download="m84-patch-skill.zip" data-i18n="i2_dl">⬇ Download AI Skill (.zip)</a>
           </div>
-          <div class="code-box">m84-patch-skill.zip<br>├── SKILL.md       # # Visual UI Patch protocol<br>└── m84-patch.html # &lt;script data-m84-patch&gt;</div>
+          <div class="code-box">m84-patch-skill.zip<br>└── m84-patch/<br>&nbsp;&nbsp;&nbsp;&nbsp;├── SKILL.md       # # Visual UI Patch protocol<br>&nbsp;&nbsp;&nbsp;&nbsp;└── m84-patch.html # &lt;script data-m84-patch&gt;</div>
         </div>
+      </div>
+
+      <div class="install-visual-head">
+        <h3 data-i18n="iv_title">Visual Chrome Installation Guide (30 seconds)</h3>
+        <p data-i18n="iv_sub">Follow these 4 visual steps to load M84 Patch into Chrome, Brave, Edge or Arc. Click any step to zoom.</p>
+      </div>
+      <div class="install-steps-grid">
+        <article class="install-step-card">
+          <div class="install-step-shot">
+            <img src="assets/install-1-download.svg" alt="Step 1: Download and unzip m84-patch-chrome-extension.zip" loading="lazy" data-zoom>
+          </div>
+          <div class="install-step-body">
+            <div class="install-step-top">
+              <span class="install-step-badge">1</span>
+              <h4 data-i18n="iv1_t">Download &amp; unzip the extension</h4>
+            </div>
+            <p data-i18n="iv1_d">Click <strong>Download Chrome Extension (.zip)</strong> above and extract the folder containing <code>manifest.json</code>.</p>
+          </div>
+        </article>
+        <article class="install-step-card">
+          <div class="install-step-shot">
+            <img src="assets/install-2-extensions.svg" alt="Step 2: Open chrome://extensions and enable Developer mode" loading="lazy" data-zoom>
+          </div>
+          <div class="install-step-body">
+            <div class="install-step-top">
+              <span class="install-step-badge">2</span>
+              <h4 data-i18n="iv2_t">Open <code>chrome://extensions</code> &amp; enable Developer mode</h4>
+            </div>
+            <p data-i18n="iv2_d">Type <code>chrome://extensions</code> in your address bar and toggle <strong>Developer mode</strong> ON at the top right.</p>
+          </div>
+        </article>
+        <article class="install-step-card">
+          <div class="install-step-shot">
+            <img src="assets/install-3-unpack.svg" alt="Step 3: Click Load unpacked and select the extracted folder" loading="lazy" data-zoom>
+          </div>
+          <div class="install-step-body">
+            <div class="install-step-top">
+              <span class="install-step-badge">3</span>
+              <h4 data-i18n="iv3_t">Click "Load unpacked" &amp; select folder</h4>
+            </div>
+            <p data-i18n="iv3_d">Select the extracted <code>m84-patch-chrome-extension/</code> folder. M84 Patch v2.0.0 appears immediately enabled.</p>
+          </div>
+        </article>
+        <article class="install-step-card">
+          <div class="install-step-shot">
+            <img src="assets/install-4-launch.svg" alt="Step 4: Pin the M84 icon and press Alt+E on any tab" loading="lazy" data-zoom>
+          </div>
+          <div class="install-step-body">
+            <div class="install-step-top">
+              <span class="install-step-badge">4</span>
+              <h4 data-i18n="iv4_t">Pin the icon &amp; press <code>Alt+E</code></h4>
+            </div>
+            <p data-i18n="iv4_d">Pin <strong>M84 Patch</strong> in your toolbar and press <code>Alt+E</code> on any <code>localhost</code> or live webpage to start editing.</p>
+          </div>
+        </article>
       </div>
     </div>
   </section>
@@ -485,7 +720,7 @@
           <h2 data-i18n="au_title">Created by Moslih84</h2>
           <p data-i18n="au_desc"><strong>M84 Patch</strong> is released open source under the <strong>MIT License</strong> to help Product Designers, UX/UI Designers, and Vibecoders iterate faster on real interfaces without sacrificing clean code or design systems.</p>
         </div>
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div class="author-actions">
           <a class="btn btn-primary" href="https://moslih84.vercel.app" target="_blank" rel="noopener noreferrer" data-i18n="au_site">Visit Moslih84 Website ↗</a>
           <a class="btn btn-secondary" href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" data-i18n="au_gh">View on GitHub ↗</a>
           <a class="btn btn-secondary" href="./demo.html" data-i18n="au_play">Open Playground</a>
@@ -496,7 +731,7 @@
 
   <footer>
     <div class="container foot-inner">
-      <span><strong class="ltr">M84 Patch</strong> v2.0.0 · <span data-i18n="ft_mit">Open Source (MIT)</span></span>
+      <span><strong class="ltr">M84 Patch</strong> v2.1.0 · <span data-i18n="ft_mit">Open Source (MIT)</span></span>
       <span data-i18n="ft_right">Created by <a href="https://moslih84.vercel.app" target="_blank" rel="noopener noreferrer" style="color:#5cb8ff;font-weight:600">Moslih84</a> · <a href="https://github.com/moslihayoub/M84-Patch" target="_blank" rel="noopener noreferrer" style="color:var(--text)">GitHub</a> · <a href="./demo.html" style="color:var(--text)">Live Playground</a></span>
     </div>
   </footer>
@@ -511,9 +746,10 @@
       nav_install: 'التثبيت',
       nav_gh_btn: 'GitHub ↗',
       nav_play_btn: 'جرب لايف',
+      dr_lang: 'اللغة',
       hero_eyebrow: 'أداة Open Source · رخصة MIT · إضافة Chrome MV3 و Skill للذكاء الاصطناعي',
       hero_title: 'محرر UI بصري بحال <span>Figma</span> كيهضر مع كاع أدوات الذكاء الاصطناعي.',
-      hero_sub: 'مصاوب لـ <strong>Product Designers</strong> و <strong>UX/UI Designers</strong> و <strong>Vibecoders</strong> : عدل أي موقع على <code>localhost</code> أولا أونلاين بصرياً وكوبي <code># Visual UI Patch</code> نقي — خدام مع <strong>كاع أدوات AI</strong> (ChatGPT / GPT, Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini, v0, Bolt, Lovable…).',
+      hero_sub: 'مصاوب لـ <strong class="ltr">Product Designers</strong> و <strong class="ltr">UX/UI Designers</strong> و <strong class="ltr">Vibecoders</strong> : عدل أي موقع على <code>localhost</code> أولا أونلاين بصرياً وكوبي <code style="white-space:nowrap"># Visual UI Patch</code> نقي — خدام مع <strong>كاع أدوات AI</strong> <span class="ltr">(ChatGPT / GPT, Claude, Antigravity, Cursor, Windsurf, Copilot, Gemini, v0, Bolt, Lovable…)</span>',
       cta_play: 'جرب Playground التفاعلي',
       cta_gh: 'الكود Open Source فـ GitHub ↗',
       cta_ext: 'تثبيت إضافة Chrome',
@@ -564,14 +800,24 @@
       inst_title: 'جوج طرق باش تخدم بـ M84 Patch',
       inst_sub: 'كود واحد منظم كيعطي إضافة Chrome MV3 و Skill مستقل للذكاء الاصطناعي.',
       i1_tag: 'موصى به · localhost والمواقع اللايف',
-      i1_t: 'إضافة Chrome (Manifest V3)',
-      i1_d: 'خدامة فـ Chrome و Brave و Edge و Arc. بلا ما تبدل والو فالكود ديالك. صلاحيات خفيفة وآمنة (<code>activeTab</code> + <code>scripting</code>).',
-      i1_dl: '⬇ تحميل إضافة Chrome (.zip)',
-      i1_steps: '1. حمل وفك الضغط على m84-patch-chrome-extension.zip<br>2. حل chrome://extensions فـ Chrome أولا Brave أولا Edge<br>3. فعل "Developer mode" (الفوق على اليمين)<br>4. كليكي على "Load unpacked" واختار الدوسي اللي فكيتي<br>5. ورك على Alt+E فوق أي صفحة باش تخدم الأداة',
+      i1_t: 'إضافة Chrome <span class="ltr">(Manifest V3)</span>',
+      i1_d: 'خدامة فـ <span class="ltr">Chrome, Brave, Edge &amp; Arc</span>. بلا ما تبدل والو فالكود ديالك. صلاحيات خفيفة وآمنة <span class="ltr">(<code>activeTab</code> + <code>scripting</code>)</span>.',
+      i1_dl: '⬇ تحميل إضافة Chrome <span class="ltr">(.zip)</span>',
+      i1_steps: '<li>حمل وفك الضغط على <code>m84-patch-chrome-extension.zip</code></li><li>حل <code>chrome://extensions</code> فـ <span class="ltr">Chrome / Brave / Edge / Arc</span></li><li>فعل <strong class="ltr">Developer mode</strong> (الفوق على اليمين)</li><li>كليكي على <strong class="ltr">Load unpacked</strong> واختار الدوسي اللي فكيتي</li><li>ورك على <code>Alt+E</code> أولا كليكي على أيقونة <strong>M84</strong> فوق أي صفحة</li>',
       i2_tag: 'ملفات HTML · Claude / Antigravity',
-      i2_t: 'Skill مستقل (.zip + SKILL.md)',
-      i2_d: 'أدخل <code>m84-patch-skill.zip</code> فـ Claude.ai أولا حطو فمجلد skills ديال Antigravity / Cursor / Windsurf.',
-      i2_dl: '⬇ تحميل AI Skill (.zip)',
+      i2_t: 'Skill مستقل <span class="ltr">(.zip + SKILL.md)</span>',
+      i2_d: 'أدخل <code>m84-patch-skill.zip</code> فـ <span class="ltr">Claude.ai</span> أولا حطو فمجلد skills ديال <span class="ltr">Antigravity / Cursor / Windsurf</span>.',
+      i2_dl: '⬇ تحميل AI Skill <span class="ltr">(.zip)</span>',
+      iv_title: 'دليل التثبيت بالصور فـ Chrome (30 ثانية)',
+      iv_sub: 'تبع هاد 4 مراحل بالصور باش تركب M84 Patch فـ Chrome و Brave و Edge و Arc. كليكي على أي صورة باش تكبرها.',
+      iv1_t: 'حمل وفك الضغط على الإضافة',
+      iv1_d: 'كليكي على <strong>تحميل إضافة Chrome (.zip)</strong> الفوق وفك الضغط باش يخرج ليك الدوسي اللي فيه <code>manifest.json</code>.',
+      iv2_t: 'حل <code>chrome://extensions</code> وفعل Developer mode',
+      iv2_d: 'كتب <code>chrome://extensions</code> فـ شريط العنوان وشعل الزر ديال <strong>Developer mode</strong> الفوق على اليمين.',
+      iv3_t: 'كليكي على "Load unpacked" واختار الدوسي',
+      iv3_d: 'اختار الدوسي <code>m84-patch-chrome-extension/</code> اللي فكيتي، وغادي تبان M84 Patch v2.0.0 خدامة مباشرة.',
+      iv4_t: 'ثبت الأيقونة وورك على <code>Alt+E</code>',
+      iv4_d: 'ثبت أيقونة <strong>M84 Patch</strong> فـ شريط المتصفح وورك على <code>Alt+E</code> فوق أي <code>localhost</code> أولا موقع لايف.',
       au_eyebrow: 'Open Source · مجتمع Product و UX/UI',
       au_title: 'من تطوير Moslih84',
       au_desc: '<strong>M84 Patch</strong> مشروع مفتوح المصدر برخصة <strong>MIT</strong> باش يعاون Product Designers و UX/UI Designers و Vibecoders يطورو واجهات احترافية بسرعة مع كود نقي.',
@@ -626,7 +872,30 @@
       img.addEventListener('click', () => { lbImg.src = img.src; lb.classList.add('show'); });
     });
     lb.addEventListener('click', () => lb.classList.remove('show'));
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') lb.classList.remove('show'); });
+
+    // Mobile Drawer
+    const burger = document.getElementById('nav-burger');
+    const drawer = document.getElementById('mobile-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const drawerClose = document.getElementById('drawer-close');
+    function setDrawer(open) {
+      drawer.classList.toggle('open', open);
+      backdrop.classList.toggle('open', open);
+      drawer.setAttribute('aria-hidden', String(!open));
+      backdrop.setAttribute('aria-hidden', String(!open));
+      burger.setAttribute('aria-expanded', String(open));
+      document.body.style.overflow = open ? 'hidden' : '';
+    }
+    burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+    drawerClose.addEventListener('click', () => setDrawer(false));
+    backdrop.addEventListener('click', () => setDrawer(false));
+    drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        lb.classList.remove('show');
+        setDrawer(false);
+      }
+    });
   </script>
 </body>
 </html>

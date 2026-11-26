@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" fill="none">
+  <rect width="800" height="460" rx="16" fill="#0e0e13"/>
+  <!-- Chrome toolbar -->
+  <rect width="800" height="56" rx="16" fill="#1c1d24"/>
+  <rect y="36" width="800" height="20" fill="#1c1d24"/>
+  <line x1="0" y1="56" x2="800" y2="56" stroke="#2e303c"/>
+  <circle cx="22" cy="28" r="5.5" fill="#ef4444"/>
+  <circle cx="40" cy="28" r="5.5" fill="#f59e0b"/>
+  <circle cx="58" cy="28" r="5.5" fill="#10b981"/>
+  <rect x="86" y="13" width="430" height="30" rx="15" fill="#111218" stroke="#2e303c"/>
+  <text x="106" y="32" fill="#a1a1aa" font-family="ui-monospace,Menlo,monospace" font-size="12.5">http://localhost:3000 (or any live site)</text>
+
+  <!-- Pinned M84 Extension Icon -->
+  <rect x="542" y="11" width="34" height="34" rx="9" fill="#0d99ff"/>
+  <text x="559" y="34" text-anchor="middle" fill="#ffffff" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="900">M</text>
+  <rect x="590" y="15" width="76" height="26" rx="13" fill="rgba(16,185,129,0.16)" stroke="#10b981"/>
+  <text x="628" y="32" text-anchor="middle" fill="#6ee7b7" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">Pinned ✓</text>
+  <rect x="688" y="16" width="92" height="24" rx="12" fill="rgba(13,153,255,0.16)" stroke="rgba(13,153,255,0.45)"/>
+  <text x="734" y="32" text-anchor="middle" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">STEP 04</text>
+
+  <!-- Mock webpage + M84 Patch active -->
+  <rect x="36" y="82" width="484" height="342" rx="14" fill="#13141b" stroke="#272935"/>
+  <!-- Highlighted element on page -->
+  <rect x="64" y="114" width="428" height="106" rx="12" fill="rgba(13,153,255,0.08)" stroke="#0d99ff" stroke-width="2" stroke-dasharray="6 4"/>
+  <rect x="64" y="96" width="142" height="20" rx="5" fill="#0d99ff"/>
+  <text x="72" y="110" fill="#ffffff" font-family="ui-monospace,Menlo,monospace" font-size="11" font-weight="700">h1#hero-title</text>
+  <text x="86" y="160" fill="#f4f4f5" font-family="Inter,system-ui,sans-serif" font-size="22" font-weight="800">Click any element to inspect</text>
+  <text x="86" y="190" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="13.5">100% isolated inside Shadow DOM · Zero CSS collision</text>
+
+  <!-- Shortcut pill -->
+  <rect x="64" y="250" width="428" height="142" rx="12" fill="#0c0d12" stroke="#272935"/>
+  <text x="278" y="286" text-anchor="middle" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="600">Toggle M84 Patch anytime on any tab:</text>
+  <rect x="166" y="304" width="76" height="44" rx="10" fill="#1e2029" stroke="#3f4252" stroke-width="1.5"/>
+  <text x="204" y="332" text-anchor="middle" fill="#f4f4f5" font-family="ui-monospace,Menlo,monospace" font-size="16" font-weight="800">Alt</text>
+  <text x="262" y="332" text-anchor="middle" fill="#71717a" font-family="Inter,system-ui,sans-serif" font-size="18" font-weight="700">+</text>
+  <rect x="282" y="304" width="56" height="44" rx="10" fill="#0d99ff"/>
+  <text x="310" y="332" text-anchor="middle" fill="#ffffff" font-family="ui-monospace,Menlo,monospace" font-size="16" font-weight="800">E</text>
+  <text x="278" y="374" text-anchor="middle" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="12">or click the M84 icon in your Chrome toolbar</text>
+
+  <!-- Floating M84 Patch Inspector Panel -->
+  <rect x="542" y="82" width="222" height="342" rx="14" fill="#18181f" stroke="#3f3f4a"/>
+  <rect x="542" y="82" width="222" height="40" rx="14" fill="#202029"/>
+  <text x="560" y="107" fill="#f4f4f5" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">M84 Patch</text>
+  <circle cx="744" cy="102" r="5" fill="#10b981"/>
+  <text x="560" y="148" fill="#71717a" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">:ROOT TOKENS</text>
+  <circle cx="572" cy="172" r="10" fill="#0d99ff"/>
+  <circle cx="600" cy="172" r="10" fill="#38bdf8"/>
+  <circle cx="628" cy="172" r="10" fill="#10b981"/>
+  <circle cx="656" cy="172" r="10" fill="#f59e0b"/>
+  <circle cx="684" cy="172" r="10" fill="#8b5cf6"/>
+  <rect x="560" y="204" width="186" height="30" rx="7" fill="#111116" stroke="#27272f"/>
+  <text x="572" y="223" fill="#cbd5e1" font-family="ui-monospace,Menlo,monospace" font-size="11.5">clip-path · Masks</text>
+  <rect x="560" y="244" width="186" height="30" rx="7" fill="#111116" stroke="#27272f"/>
+  <text x="572" y="263" fill="#cbd5e1" font-family="ui-monospace,Menlo,monospace" font-size="11.5">Code { } · Live CSS</text>
+  <rect x="560" y="284" width="186" height="30" rx="7" fill="#111116" stroke="#27272f"/>
+  <text x="572" y="303" fill="#cbd5e1" font-family="ui-monospace,Menlo,monospace" font-size="11.5">Notes · Pins &amp; Zones</text>
+  <rect x="560" y="362" width="186" height="40" rx="9" fill="#0d99ff"/>
+  <text x="653" y="387" text-anchor="middle" fill="#ffffff" font-family="Inter,system-ui,sans-serif" font-size="12.5" font-weight="800">Copy # Visual UI Patch</text>
+</svg>

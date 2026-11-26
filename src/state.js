@@ -48,12 +48,22 @@ export function createState() {
     masks: new Map(),      // el -> { preset, name, depth, clipPath }
     codeBlocks: new Map(), // el -> { id, css, js }
     customColors,
+    sessionColors: new Set(), // token names created or applied in this session
+    origSelectors: new WeakMap(), // el -> original selector captured before DOM moves
 
     undoStack: [], // [{ undo, redo }]
     redoStack: [],
     txOps: null,   // active transaction array when grouping multiple ops
 
     onChange: () => {}
+  };
+
+  const getTargetSelector = el => {
+    if (!el || el.nodeType !== 1) return '';
+    if (!st.origSelectors.has(el)) {
+      st.origSelectors.set(el, getUniqueSelector(el));
+    }
+    return st.origSelectors.get(el);
   };
 
   const persistColors = () => {
@@ -123,7 +133,18 @@ export function createState() {
     st.onChange();
   };
 
+  const isValidStyleVal = (prop, val) => {
+    if (val === '') return true;
+    if (typeof val !== 'string' || /\bNaN\b/i.test(val)) return false;
+    const probe = document.createElement('i');
+    probe.style[prop] = val;
+    return probe.style[prop] !== '';
+  };
+
   const applyStyleRaw = (el, prop, val, label) => {
+    if (!isValidStyleVal(prop, val)) return false;
+    getTargetSelector(el);
+    if (label && st.customColors.some(c => c.n === label)) st.sessionColors.add(label);
     if (!st.styleDiffs.has(el)) st.styleDiffs.set(el, {});
     const rec = st.styleDiffs.get(el);
     if (!rec[prop]) rec[prop] = { b: getComputedStyle(el)[prop] };
@@ -136,10 +157,11 @@ export function createState() {
     rec[prop].a = displayVal || rec[prop].b;
     if (rec[prop].a === rec[prop].b || val === '') delete rec[prop];
     if (!Object.keys(rec).length) st.styleDiffs.delete(el);
+    return true;
   };
 
   const setStyle = (el, prop, val, label, record = true) => {
-    if (!el) return;
+    if (!el || !isValidStyleVal(prop, val)) return false;
     const needBorderStyle =
       (prop === 'borderWidth' || prop === 'borderColor') &&
       getComputedStyle(el).borderTopStyle === 'none';
@@ -147,7 +169,7 @@ export function createState() {
     const doOne = (p, v, lab) => {
       const prevInline = el.style[p];
       const prevDiff = st.styleDiffs.get(el)?.[p] ? { ...st.styleDiffs.get(el)[p] } : null;
-      applyStyleRaw(el, p, v, lab);
+      if (!applyStyleRaw(el, p, v, lab)) return false;
       if (record) {
         pushOp({
           undo: () => {
@@ -163,6 +185,7 @@ export function createState() {
           redo: () => applyStyleRaw(el, p, v, lab)
         });
       }
+      return true;
     };
 
     if (needBorderStyle && record && !st.txOps) {
@@ -175,25 +198,33 @@ export function createState() {
       doOne(prop, val, label);
       if (!st.txOps) st.onChange();
     }
+    return true;
   };
 
-  const setText = (el, before, after) => {
+  const cloneChildNodes = nodes => nodes.map(n => n.cloneNode(true));
+
+  const setText = (el, before, after, beforeNodes = null, afterNodes = null) => {
     if (before === after) return;
+    getTargetSelector(el);
     const origBefore = st.textDiffs.get(el)?.b ?? before;
     const prevEntry = st.textDiffs.get(el) ? { ...st.textDiffs.get(el) } : null;
-    const applyT = val => {
-      el.textContent = val;
+    const bSnap = beforeNodes ? cloneChildNodes(beforeNodes) : null;
+    const aSnap = afterNodes ? cloneChildNodes(afterNodes) : null;
+    const applyT = (val, snap) => {
+      if (snap) el.replaceChildren(...cloneChildNodes(snap));
+      else el.textContent = val;
       if (val === origBefore) st.textDiffs.delete(el);
       else st.textDiffs.set(el, { b: origBefore, a: val });
     };
-    applyT(after);
+    applyT(after, aSnap);
     pushOp({
       undo: () => {
-        el.textContent = before;
+        if (bSnap) el.replaceChildren(...cloneChildNodes(bSnap));
+        else el.textContent = before;
         if (prevEntry) st.textDiffs.set(el, { ...prevEntry });
         else st.textDiffs.delete(el);
       },
-      redo: () => applyT(after)
+      redo: () => applyT(after, aSnap)
     });
     st.onChange();
   };
@@ -207,18 +238,27 @@ export function createState() {
     const list = siblings(el);
     const other = list[list.indexOf(el) + delta];
     if (!other) return;
+    // Capture original selectors for all siblings BEFORE mutating DOM order
+    list.forEach(getTargetSelector);
+    const elSel = getTargetSelector(el);
+    const otherSel = getTargetSelector(other);
     const nextRef = el.nextSibling;
     const entry = {
-      desc: `\`${getUniqueSelector(el)}\` moved ${delta < 0 ? 'before' : 'after'} \`${getUniqueSelector(other)}\``,
+      desc: `\`${elSel}\` moved ${delta < 0 ? 'before' : 'after'} \`${otherSel}\``,
       active: true
     };
     const redoFn = () => {
+      if (!par.isConnected || !el.isConnected || !other.isConnected) return false;
       delta < 0 ? par.insertBefore(el, other) : par.insertBefore(el, other.nextSibling);
       entry.active = true;
+      return true;
     };
     const undoFn = () => {
+      if (!par.isConnected || !el.isConnected) return false;
+      if (nextRef && nextRef.parentNode !== par) return false;
       par.insertBefore(el, nextRef);
       entry.active = false;
+      return true;
     };
     redoFn();
     st.domMoves.push(entry);
@@ -230,18 +270,26 @@ export function createState() {
     if (!el) return;
     const kids = [...el.children].filter(n => !isApexNode(n) && !SKIP_TAGS.test(n.tagName));
     if (kids.length < 2) return;
+    const parentSel = getTargetSelector(el);
+    kids.forEach(getTargetSelector);
     const anchor = kids[kids.length - 1].nextSibling;
     const entry = {
-      desc: `order of ${kids.length} children inside \`${getUniqueSelector(el)}\` reversed`,
+      desc: `order of ${kids.length} children inside \`${parentSel}\` reversed`,
       active: true
     };
     const redoFn = () => {
-      [...kids].reverse().forEach(n => el.insertBefore(n, anchor));
+      if (!el.isConnected) return false;
+      const safeAnchor = anchor && anchor.parentNode === el ? anchor : null;
+      [...kids].reverse().forEach(n => { if (n.isConnected) el.insertBefore(n, safeAnchor); });
       entry.active = true;
+      return true;
     };
     const undoFn = () => {
-      kids.forEach(n => el.insertBefore(n, anchor));
+      if (!el.isConnected) return false;
+      const safeAnchor = anchor && anchor.parentNode === el ? anchor : null;
+      kids.forEach(n => { if (n.isConnected) el.insertBefore(n, safeAnchor); });
       entry.active = false;
+      return true;
     };
     redoFn();
     st.domMoves.push(entry);
@@ -383,17 +431,27 @@ export function createState() {
   };
 
   const undo = () => {
-    const op = st.undoStack.pop();
+    const op = st.undoStack[st.undoStack.length - 1];
     if (!op) return;
-    op.undo();
+    try {
+      if (op.undo() === false) return;
+    } catch (_) {
+      return;
+    }
+    st.undoStack.pop();
     st.redoStack.push(op);
     st.onChange();
   };
 
   const redo = () => {
-    const op = st.redoStack.pop();
+    const op = st.redoStack[st.redoStack.length - 1];
     if (!op) return;
-    op.redo();
+    try {
+      if (op.redo() === false) return;
+    } catch (_) {
+      return;
+    }
+    st.redoStack.pop();
     st.undoStack.push(op);
     st.onChange();
   };
@@ -401,7 +459,7 @@ export function createState() {
   const resetAll = () => {
     while (st.undoStack.length) {
       const op = st.undoStack.pop();
-      op.undo();
+      try { op.undo(); } catch (_) {}
     }
     st.redoStack.length = 0;
     st.pins.forEach(p => {
@@ -414,6 +472,7 @@ export function createState() {
     st.styleDiffs.clear();
     st.textDiffs.clear();
     st.masks.clear();
+    st.sessionColors.clear();
     st.codeBlocks.forEach((_, el) => delete el.dataset.apexId);
     st.codeBlocks.clear();
     syncLiveCss();
@@ -433,6 +492,8 @@ export function createState() {
 
   return {
     st,
+    getTargetSelector,
+    isValidStyleVal,
     persistColors,
     getPalette,
     withTx,

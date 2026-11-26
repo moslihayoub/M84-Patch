@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" fill="none">
+  <rect width="800" height="460" rx="16" fill="#0e0e13"/>
+  <!-- Top bar -->
+  <rect width="800" height="44" rx="16" fill="#181920"/>
+  <rect y="28" width="800" height="16" fill="#181920"/>
+  <line x1="0" y1="44" x2="800" y2="44" stroke="#292b36"/>
+  <circle cx="22" cy="22" r="5.5" fill="#ef4444"/>
+  <circle cx="40" cy="22" r="5.5" fill="#f59e0b"/>
+  <circle cx="58" cy="22" r="5.5" fill="#10b981"/>
+  <text x="86" y="27" fill="#a1a1aa" font-family="ui-monospace,Menlo,monospace" font-size="12.5">chrome://extensions</text>
+  <rect x="688" y="10" width="92" height="24" rx="12" fill="rgba(13,153,255,0.16)" stroke="rgba(13,153,255,0.45)"/>
+  <text x="734" y="26" text-anchor="middle" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">STEP 03</text>
+
+  <!-- Load unpacked button highlighted -->
+  <rect x="36" y="64" width="156" height="40" rx="9" fill="#0d99ff"/>
+  <text x="114" y="89" text-anchor="middle" fill="#ffffff" font-family="Inter,system-ui,sans-serif" font-size="13.5" font-weight="700">1. Load unpacked</text>
+
+  <!-- Folder picker mock -->
+  <rect x="36" y="124" width="320" height="292" rx="14" fill="#14151c" stroke="#343746"/>
+  <text x="56" y="156" fill="#f4f4f5" font-family="Inter,system-ui,sans-serif" font-size="13.5" font-weight="700">Select the extension directory</text>
+  <line x1="36" y1="170" x2="356" y2="170" stroke="#272935"/>
+  <rect x="52" y="186" width="288" height="44" rx="9" fill="rgba(13,153,255,0.16)" stroke="#0d99ff" stroke-width="1.5"/>
+  <text x="68" y="213" fill="#f4f4f5" font-family="ui-monospace,Menlo,monospace" font-size="13" font-weight="700">📁 m84-patch-chrome-extension</text>
+  <rect x="52" y="240" width="288" height="36" rx="8" fill="#1b1c24"/>
+  <text x="68" y="263" fill="#71717a" font-family="ui-monospace,Menlo,monospace" font-size="12">📁 Other downloads...</text>
+  <rect x="192" y="362" width="148" height="36" rx="8" fill="#10b981"/>
+  <text x="266" y="385" text-anchor="middle" fill="#09090b" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="800">2. Select Folder ✓</text>
+
+  <!-- Arrow -->
+  <line x1="372" y1="270" x2="416" y2="270" stroke="#10b981" stroke-width="3" stroke-linecap="round"/>
+  <polyline points="405,259 418,270 405,281" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Installed Extension Card -->
+  <rect x="434" y="124" width="330" height="292" rx="14" fill="#16171f" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="456" y="150" width="48" height="48" rx="12" fill="#0d99ff"/>
+  <text x="480" y="183" text-anchor="middle" fill="#ffffff" font-family="Inter,system-ui,sans-serif" font-size="24" font-weight="900">M</text>
+  <text x="518" y="170" fill="#f4f4f5" font-family="Inter,system-ui,sans-serif" font-size="15" font-weight="700">M84 Patch — Visual UI Patcher</text>
+  <text x="518" y="191" fill="#71717a" font-family="ui-monospace,Menlo,monospace" font-size="12">v2.0.0 · Manifest V3</text>
+  <text x="456" y="232" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="12.5">Open-source Figma-like Visual UI Editor</text>
+  <text x="456" y="252" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="12.5">(Shadow DOM) by Moslih84.</text>
+  <rect x="456" y="274" width="286" height="32" rx="8" fill="rgba(16,185,129,0.12)"/>
+  <text x="470" y="294" fill="#6ee7b7" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600">Permissions: activeTab + scripting only</text>
+
+  <line x1="434" y1="348" x2="764" y2="348" stroke="#272935"/>
+  <rect x="456" y="366" width="76" height="30" rx="7" fill="#1e2029" stroke="#343746"/>
+  <text x="494" y="385" text-anchor="middle" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="12">Details</text>
+  <rect x="542" y="366" width="78" height="30" rx="7" fill="#1e2029" stroke="#343746"/>
+  <text x="581" y="385" text-anchor="middle" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="12">Remove</text>
+  <!-- Enabled toggle -->
+  <rect x="698" y="369" width="44" height="24" rx="12" fill="#0d99ff"/>
+  <circle cx="730" cy="381" r="9" fill="#ffffff"/>
+</svg>

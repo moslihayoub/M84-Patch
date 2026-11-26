@@ -102,12 +102,16 @@ export const isApexNode = el =>
 
 export const getUniqueSelector = el => {
   if (!el || el.nodeType !== 1) return '';
-  if (el.id && document.querySelectorAll('#' + CSS.escape(el.id)).length === 1) {
-    return '#' + el.id;
+  if (el.id) {
+    const escapedId = '#' + CSS.escape(el.id);
+    try {
+      const matches = document.querySelectorAll(escapedId);
+      if (matches.length === 1 && matches[0] === el) return escapedId;
+    } catch (_) {}
   }
   const parts = [];
   let cur = el;
-  while (cur && cur.nodeType === 1 && cur !== document.body && parts.length < 6) {
+  while (cur && cur.nodeType === 1 && cur !== document.body && cur !== document.documentElement) {
     let seg = cur.tagName.toLowerCase();
     const cls = [...cur.classList]
       .filter(c => !c.startsWith('ax-') && !c.startsWith('apexui-') && !c.startsWith('ve-'))
@@ -121,12 +125,42 @@ export const getUniqueSelector = el => {
     parts.unshift(seg);
     const candidate = parts.join(' > ');
     try {
-      if (document.querySelectorAll(candidate).length === 1) return candidate;
+      const matches = document.querySelectorAll(candidate);
+      if (matches.length === 1 && matches[0] === el) return candidate;
     } catch (_) {}
     cur = parent;
   }
-  return parts.join(' > ');
+  const fallback = parts.join(' > ');
+  if (fallback && document.contains(el)) {
+    try {
+      const matches = document.querySelectorAll(fallback);
+      if (matches.length === 1 && matches[0] === el) return fallback;
+    } catch (_) {}
+  }
+  return fallback ? `${fallback} /* non-unique */` : '';
 };
+
+export const composeTranslate = (existingTransform, x, y) => {
+  const base = (existingTransform || '')
+    .replace(/\btranslate\(\s*[-\d.]+px\s*,\s*[-\d.]+px\s*\)/g, '')
+    .trim();
+  const tr = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+  return base && base !== 'none' ? `${tr} ${base}` : tr;
+};
+
+export const sanitizeCssUrls = val =>
+  String(val ?? '').replace(/url\(\s*(['"]?)(https?:\/\/[^'")]+)\1\s*\)/gi, (_, q, rawUrl) => {
+    try {
+      const u = new URL(rawUrl);
+      u.username = '';
+      u.password = '';
+      u.search = '';
+      u.hash = '';
+      return `url(${q}${u.toString()}${q})`;
+    } catch (_) {
+      return `url(${q}${rawUrl}${q})`;
+    }
+  });
 
 export const readRootTokens = () => {
   const out = [];

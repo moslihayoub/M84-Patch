@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
   "name": "M84 Patch — Visual UI Patcher",
-  "version": "2.0.0",
-  "description": "Open-source Figma-like Visual UI Editor (Shadow DOM) by Moslih84 for Product Designers, UX/UI & Vibecoders. Exports clean # Visual UI Patch prompts for GPT, Claude, Antigravity, Cursor & all AI tools.",
+  "version": "2.1.0",
+  "description": "Open-source Visual UI Editor (Shadow DOM) by Moslih84. Tweak any site and export clean # Visual UI Patch prompts for all AI tools.",
   "permissions": ["activeTab", "scripting"],
   "action": {
-    "default_title": "Toggle M84 Patch (Alt+E)",
+    "default_title": "Toggle M84 Patch (Alt+Shift+M)",
     "default_icon": {
       "16": "icons/icon16.png",
       "48": "icons/icon48.png",
@@ -23,7 +23,7 @@
   "commands": {
     "toggle-apexui": {
       "suggested_key": {
-        "default": "Alt+E"
+        "default": "Alt+Shift+M"
       },
       "description": "Toggle M84 Patch on the active tab"
     }

@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" fill="none">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="800" y2="460" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#111116"/>
+      <stop offset="100%" stop-color="#09090b"/>
+    </linearGradient>
+    <linearGradient id="blue1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0d99ff"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="460" rx="16" fill="url(#bg1)"/>
+  <!-- Top window bar -->
+  <rect x="0" y="0" width="800" height="44" rx="16" fill="#18181f"/>
+  <rect x="0" y="28" width="800" height="16" fill="#18181f"/>
+  <line x1="0" y1="44" x2="800" y2="44" stroke="#27272f"/>
+  <circle cx="24" cy="22" r="6" fill="#ef4444"/>
+  <circle cx="44" cy="22" r="6" fill="#f59e0b"/>
+  <circle cx="64" cy="22" r="6" fill="#10b981"/>
+  <text x="92" y="27" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="600">Downloads — Extract Extension</text>
+  <rect x="688" y="10" width="92" height="24" rx="12" fill="rgba(13,153,255,0.16)" stroke="rgba(13,153,255,0.45)"/>
+  <text x="734" y="26" text-anchor="middle" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">STEP 01</text>
+
+  <!-- Left card: ZIP file -->
+  <rect x="44" y="96" width="290" height="284" rx="14" fill="#14141a" stroke="#27272f"/>
+  <rect x="139" y="132" width="100" height="100" rx="20" fill="rgba(13,153,255,0.12)" stroke="rgba(13,153,255,0.45)" stroke-width="1.5"/>
+  <rect x="169" y="156" width="40" height="52" rx="6" fill="url(#blue1)"/>
+  <text x="189" y="188" text-anchor="middle" fill="#09090b" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="900">ZIP</text>
+  <text x="189" y="264" text-anchor="middle" fill="#f4f4f5" font-family="ui-monospace,Menlo,monospace" font-size="13" font-weight="700">m84-patch-chrome-</text>
+  <text x="189" y="282" text-anchor="middle" fill="#f4f4f5" font-family="ui-monospace,Menlo,monospace" font-size="13" font-weight="700">extension.zip</text>
+  <text x="189" y="308" text-anchor="middle" fill="#71717a" font-family="Inter,system-ui,sans-serif" font-size="12">27.5 KB · Zero dependencies</text>
+  <rect x="94" y="328" width="190" height="32" rx="8" fill="#0d99ff"/>
+  <text x="189" y="349" text-anchor="middle" fill="#ffffff" font-family="Inter,system-ui,sans-serif" font-size="12.5" font-weight="700">Right-click → Extract All</text>
+
+  <!-- Arrow -->
+  <line x1="354" y1="238" x2="424" y2="238" stroke="#0d99ff" stroke-width="3" stroke-linecap="round"/>
+  <polyline points="412,226 426,238 412,250" stroke="#0d99ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="390" y="216" text-anchor="middle" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">UNZIP</text>
+
+  <!-- Right card: Extracted folder -->
+  <rect x="446" y="96" width="310" height="284" rx="14" fill="#14141a" stroke="#10b981" stroke-width="1.5"/>
+  <rect x="466" y="116" width="270" height="40" rx="9" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.35)"/>
+  <text x="484" y="141" fill="#6ee7b7" font-family="ui-monospace,Menlo,monospace" font-size="13" font-weight="700">📁 m84-patch-chrome-extension/</text>
+
+  <g font-family="ui-monospace,Menlo,monospace" font-size="13">
+    <rect x="466" y="172" width="270" height="36" rx="8" fill="#1b1b22"/>
+    <text x="484" y="195" fill="#7dd3fc">📄 manifest.json</text>
+    <text x="720" y="195" text-anchor="end" fill="#71717a" font-size="11">MV3</text>
+
+    <rect x="466" y="216" width="270" height="36" rx="8" fill="#1b1b22"/>
+    <text x="484" y="239" fill="#e4e4e7">📄 background.js</text>
+
+    <rect x="466" y="260" width="270" height="36" rx="8" fill="#1b1b22"/>
+    <text x="484" y="283" fill="#e4e4e7">📄 m84-patch-content.js</text>
+
+    <rect x="466" y="304" width="270" height="36" rx="8" fill="#1b1b22"/>
+    <text x="484" y="327" fill="#fbbf24">📁 icons/ (16, 48, 128)</text>
+  </g>
+  <text x="601" y="364" text-anchor="middle" fill="#6ee7b7" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600">✓ Ready to load in Chrome / Brave / Edge</text>
+</svg>

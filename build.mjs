@@ -6,8 +6,9 @@ import zlib from 'node:zlib';
 const ROOT = path.resolve(import.meta.dirname);
 const DIST_EXT = path.join(ROOT, 'dist', 'chrome-extension');
 const DIST_SKILL = path.join(ROOT, 'dist', 'claude-skill');
+const SYNC_GLOBAL_SKILL = process.argv.includes('--sync-skill');
 const SKILLS_PARENT = path.join(os.homedir(), '.gemini', 'config', 'skills');
-const GLOBAL_SKILL = fs.existsSync(SKILLS_PARENT) ? path.join(SKILLS_PARENT, 'm84-patch') : null;
+const GLOBAL_SKILL = SYNC_GLOBAL_SKILL && fs.existsSync(SKILLS_PARENT) ? path.join(SKILLS_PARENT, 'm84-patch') : null;
 const DEMO_DIR = path.join(ROOT, 'demo');
 
 const MODULE_ORDER = [
@@ -75,21 +76,24 @@ function createIconPng(size) {
         raw[idx] = raw[idx + 1] = raw[idx + 2] = raw[idx + 3] = 0;
         continue;
       }
-      // Draw geometric M84 Patch chevron/A glyph in #0d99ff + #7dd3fc accent
+      // Draw geometric white "M" glyph inside blue gradient rounded square (#0d99ff -> #38bdf8)
       const nx = x / size;
       const ny = y / size;
-      const leftLeg = Math.abs(nx - (0.5 - (ny - 0.2) * 0.45)) < 0.095 && ny > 0.2 && ny < 0.82;
-      const rightLeg = Math.abs(nx - (0.5 + (ny - 0.2) * 0.45)) < 0.095 && ny > 0.2 && ny < 0.82;
-      const cross = Math.abs(ny - 0.62) < 0.065 && nx > 0.32 && nx < 0.68;
-      if (leftLeg || rightLeg || cross) {
-        raw[idx] = 13;
-        raw[idx + 1] = 153;
+      const inY = ny >= 0.23 && ny <= 0.77;
+      const leftBar = inY && Math.abs(nx - 0.25) < 0.068;
+      const rightBar = inY && Math.abs(nx - 0.75) < 0.068;
+      const leftDiag = ny >= 0.23 && ny <= 0.58 && Math.abs(nx - (0.25 + (ny - 0.23) * (0.25 / 0.35))) < 0.064;
+      const rightDiag = ny >= 0.23 && ny <= 0.58 && Math.abs(nx - (0.75 - (ny - 0.23) * (0.25 / 0.35))) < 0.064;
+      if (leftBar || rightBar || leftDiag || rightDiag) {
+        raw[idx] = 255;
+        raw[idx + 1] = 255;
         raw[idx + 2] = 255;
         raw[idx + 3] = 255;
       } else {
-        raw[idx] = 24;
-        raw[idx + 1] = 24;
-        raw[idx + 2] = 27;
+        const t = (nx + ny) * 0.5;
+        raw[idx] = Math.round(13 + (56 - 13) * t);
+        raw[idx + 1] = Math.round(153 + (189 - 153) * t);
+        raw[idx + 2] = Math.round(255 + (248 - 255) * t);
         raw[idx + 3] = 255;
       }
     }
@@ -155,7 +159,7 @@ function buildDemoHtml(scriptBlock) {
     .topbar { position: sticky; top: 0; z-index: 20; background: rgba(255,255,255,.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-soft); }
     .topbar-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
     .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.02em; }
-    .logo-mark { width: 32px; height: 32px; border-radius: 9px; background: var(--brand-900); color: var(--brand-600); display: grid; place-items: center; font-weight: 800; font-size: 13px; }
+    .logo-mark { width: 32px; height: 32px; border-radius: 9px; background: linear-gradient(135deg, #0d99ff, #38bdf8); color: #ffffff; display: grid; place-items: center; font-weight: 900; font-size: 16px; line-height: 1; flex-shrink: 0; }
     nav { display: flex; gap: 24px; font-size: 14px; font-weight: 500; color: var(--text-muted); }
     nav a:hover { color: var(--brand-900); }
     .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; font-weight: 600; font-size: 14px; border: 0; cursor: pointer; transition: transform .15s, background .15s; }
@@ -193,14 +197,15 @@ function buildDemoHtml(scriptBlock) {
     .checklist { list-style: none; padding: 0; margin: 16px 0 24px; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--text-muted); }
     footer { border-top: 1px solid var(--border-soft); padding: 32px 0; color: var(--text-muted); font-size: 13px; }
     .foot-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    @media (max-width: 860px) { .hero-grid, .bento, .pricing { grid-template-columns: 1fr; } .hero h1 { font-size: 34px; } }
+    @media (max-width: 860px) { .hero-grid, .bento, .pricing { grid-template-columns: 1fr; } .hero h1 { font-size: 34px; } nav { display: none; } }
+    @media (max-width: 520px) { .container { padding: 0 16px; } .topbar-inner { gap: 10px; } .logo { font-size: 14px; } .btn { padding: 9px 13px; font-size: 13px; } }
   </style>
 </head>
 <body>
   <header class="topbar" id="demo-header">
     <div class="container topbar-inner">
       <a class="logo" href="../docs/index.html">
-        <span class="logo-mark">M84</span>
+        <span class="logo-mark">M</span>
         <span>M84 Patch Playground</span>
       </a>
       <nav>
@@ -296,7 +301,7 @@ function buildDemoHtml(scriptBlock) {
 
   <footer>
     <div class="container foot-row">
-      <span><strong>M84 Patch</strong> — Interactive Visual Playground (v2.0.0)</span>
+      <span><strong>M84 Patch</strong> — Interactive Visual Playground (v2.1.0)</span>
       <span>Created by <a href="https://moslih84.vercel.app" target="_blank" rel="noopener noreferrer" style="color:var(--brand-600);font-weight:600">Moslih84</a> · MIT License</span>
     </div>
   </footer>
@@ -405,12 +410,12 @@ function main() {
 
   const zipPath = path.join(DIST_SKILL, 'm84-patch-skill.zip');
   const zipBuf = createZipBuffer([
-    { name: 'SKILL.md', data: skillMd },
-    { name: 'm84-patch.html', data: scriptBlock }
+    { name: 'm84-patch/SKILL.md', data: skillMd },
+    { name: 'm84-patch/m84-patch.html', data: scriptBlock }
   ]);
   fs.writeFileSync(zipPath, zipBuf);
 
-  // 3. Sync Global Antigravity Skill (local Windows dev machine only)
+  // 3. Sync Global Antigravity Skill only when explicitly requested (--sync-skill)
   if (GLOBAL_SKILL) {
     fs.writeFileSync(path.join(GLOBAL_SKILL, 'SKILL.md'), skillMd, 'utf8');
     fs.writeFileSync(path.join(GLOBAL_SKILL, 'm84-patch.html'), scriptBlock, 'utf8');

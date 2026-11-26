@@ -1,9 +1,10 @@
 {
   "name": "m84-patch",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "M84 Patch — Visual UI Patcher & AI Prompt Engine (Chrome Extension MV3 + Standalone HTML Skill) by Moslih84",
   "type": "module",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "sync-skill": "node build.mjs --sync-skill"
   }
 }

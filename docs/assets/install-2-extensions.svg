@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" fill="none">
+  <rect width="800" height="460" rx="16" fill="#0e0e13"/>
+  <!-- Chrome top bar -->
+  <rect width="800" height="40" rx="16" fill="#1c1d24"/>
+  <rect y="24" width="800" height="16" fill="#1c1d24"/>
+  <circle cx="22" cy="20" r="5.5" fill="#ef4444"/>
+  <circle cx="40" cy="20" r="5.5" fill="#f59e0b"/>
+  <circle cx="58" cy="20" r="5.5" fill="#10b981"/>
+  <!-- Active tab -->
+  <path d="M84 40 L84 14 Q84 8 92 8 L244 8 Q252 8 252 14 L252 40 Z" fill="#262830"/>
+  <text x="104" y="28" fill="#f4f4f5" font-family="Inter,system-ui,sans-serif" font-size="12.5" font-weight="600">Extensions</text>
+  <rect x="688" y="8" width="92" height="24" rx="12" fill="rgba(13,153,255,0.16)" stroke="rgba(13,153,255,0.45)"/>
+  <text x="734" y="24" text-anchor="middle" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">STEP 02</text>
+
+  <!-- Address bar row -->
+  <rect y="40" width="800" height="52" fill="#262830"/>
+  <line x1="0" y1="92" x2="800" y2="92" stroke="#343742"/>
+  <rect x="86" y="49" width="540" height="34" rx="17" fill="#15161c" stroke="#0d99ff" stroke-width="2"/>
+  <text x="108" y="71" fill="#7dd3fc" font-family="ui-monospace,Menlo,monospace" font-size="14" font-weight="700">chrome://extensions</text>
+  <rect x="526" y="55" width="90" height="22" rx="11" fill="rgba(13,153,255,0.2)"/>
+  <text x="571" y="70" text-anchor="middle" fill="#7dd3fc" font-family="Inter,system-ui,sans-serif" font-size="11" font-weight="700">Type URL</text>
+
+  <!-- Chrome Extensions header -->
+  <rect y="92" width="800" height="68" fill="#181920"/>
+  <line x1="0" y1="160" x2="800" y2="160" stroke="#292b36"/>
+  <text x="36" y="133" fill="#f4f4f5" font-family="Inter,system-ui,sans-serif" font-size="20" font-weight="700">Extensions</text>
+
+  <!-- Highlighted Developer Mode toggle -->
+  <rect x="536" y="104" width="234" height="44" rx="12" fill="rgba(13,153,255,0.14)" stroke="#0d99ff" stroke-width="2"/>
+  <text x="556" y="131" fill="#f4f4f5" font-family="Inter,system-ui,sans-serif" font-size="14" font-weight="700">Developer mode</text>
+  <!-- Toggle ON -->
+  <rect x="706" y="114" width="46" height="24" rx="12" fill="#0d99ff"/>
+  <circle cx="740" cy="126" r="9" fill="#ffffff"/>
+
+  <!-- Callout arrow pointing to Developer Mode -->
+  <rect x="498" y="182" width="272" height="44" rx="10" fill="#0d99ff"/>
+  <polygon points="722,182 732,168 742,182" fill="#0d99ff"/>
+  <text x="634" y="209" text-anchor="middle" fill="#ffffff" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="700">Turn ON "Developer mode" (top right)</text>
+
+  <!-- Sub-toolbar revealed when Developer Mode is ON -->
+  <rect x="36" y="256" width="728" height="164" rx="14" fill="#14151b" stroke="#272935"/>
+  <text x="60" y="288" fill="#a1a1aa" font-family="Inter,system-ui,sans-serif" font-size="12.5" font-weight="600">Developer toolbar unlocked:</text>
+  <rect x="60" y="308" width="144" height="38" rx="8" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/>
+  <text x="132" y="332" text-anchor="middle" fill="#6ee7b7" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="700">Load unpacked</text>
+
+  <rect x="218" y="308" width="136" height="38" rx="8" fill="#1e2029" stroke="#343746"/>
+  <text x="286" y="332" text-anchor="middle" fill="#71717a" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="600">Pack extension</text>
+
+  <rect x="368" y="308" width="96" height="38" rx="8" fill="#1e2029" stroke="#343746"/>
+  <text x="416" y="332" text-anchor="middle" fill="#71717a" font-family="Inter,system-ui,sans-serif" font-size="13" font-weight="600">Update</text>
+
+  <text x="60" y="384" fill="#71717a" font-family="Inter,system-ui,sans-serif" font-size="12.5">Works identically on Brave (brave://extensions), Edge (edge://extensions) &amp; Arc.</text>
+</svg>

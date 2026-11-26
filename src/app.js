@@ -4,6 +4,7 @@ import {
   icon,
   isApexNode,
   getUniqueSelector,
+  composeTranslate,
   getUnionRect,
   slugify,
   NOISE_SVG,
@@ -28,7 +29,7 @@ export function bootApexUI() {
   host.setAttribute('data-apexui', '');
   document.body.appendChild(host);
 
-  const shadow = host.attachShadow({ mode: 'open' });
+  const shadow = host.attachShadow({ mode: 'closed' });
   const styleEl = document.createElement('style');
   styleEl.textContent = SHADOW_CSS;
   shadow.appendChild(styleEl);
@@ -46,7 +47,7 @@ export function bootApexUI() {
   const ib = (attrs, title, d, extra = '') =>
     `<button class="ax-b ic ${extra}" ${attrs} title="${esc(title)}" aria-label="${esc(title)}">${icon(d)}</button>`;
 
-  const tab = mk('button', 'ax-tab', '<span class="ax-dot"></span>M84 Patch (Alt+E)');
+  const tab = mk('button', 'ax-tab', '<span class="ax-dot"></span>M84 Patch (Alt+Shift+M)');
 
   const top = mk(
     'div',
@@ -101,9 +102,10 @@ export function bootApexUI() {
   const mod = mk(
     'div',
     'ax-mod',
-    `<div class="ax-card">
-      <div class="ax-row"><strong style="font-size:14px">M84 Patch · Visual UI Patch (GPT / Claude / Antigravity / Cursor…)</strong><button class="ax-b" data-mc>✕</button></div>
+    `<div class="ax-card" role="dialog" aria-modal="true" aria-label="Export Visual UI Patch">
+      <div class="ax-row"><strong style="font-size:14px">M84 Patch · Visual UI Patch (GPT / Claude / Antigravity / Cursor…)</strong><button class="ax-b" data-mc aria-label="Close">✕</button></div>
       <label class="ax-f">Design intent (optional)<textarea data-note rows="2" placeholder="e.g. cleaner hierarchy, more breathing room, higher CTA contrast…"></textarea></label>
+      <label style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#a1a1aa;cursor:pointer"><input type="checkbox" data-priv> Privacy mode (omit original page text)</label>
       <textarea data-out rows="15" readonly></textarea>
       <div data-imgs style="display:flex;flex-wrap:wrap;gap:6px"></div>
       <div class="ax-row"><span data-ms style="color:#a1a1aa">Copy and paste into any AI coding assistant.</span><button class="ax-b pri" data-cp>Copy Patch Prompt</button></div>
@@ -116,7 +118,10 @@ export function bootApexUI() {
   const { st } = api;
 
   let pendingImgs = [];
+  let pendingImgBytes = 0;
+  let popDraftSeq = 0;
   let pendingPin = null;
+  let lastGeneratedPatch = '';
   let drag = null;
   let scrub = null;
   let tdrag = null;
@@ -269,6 +274,7 @@ export function bootApexUI() {
     if (!st.on) {
       hov.style.display = box.style.display = zb.style.display = 'none';
       pop.classList.remove('show');
+      mod.classList.remove('show');
       subbar.classList.remove('show');
       delete document.documentElement.dataset.apexm;
     } else {
@@ -305,12 +311,27 @@ export function bootApexUI() {
       updateToolbar();
       syncOverlays();
     }
+    const refreshExport = () => {
+      const noteVal = mod.querySelector('[data-note]').value;
+      const omitOriginalText = !!mod.querySelector('[data-priv]')?.checked;
+      lastGeneratedPatch = generatePatchPrompt(st, noteVal, { omitOriginalText });
+      mod.querySelector('[data-out]').value = lastGeneratedPatch;
+    };
     if (a === 'undo') api.undo();
     if (a === 'redo') api.redo();
-    if (a === 'reset') api.resetAll();
+    if (a === 'reset') {
+      api.resetAll();
+      mod.querySelector('[data-note]').value = '';
+      mod.querySelector('[data-out]').value = '';
+      mod.querySelector('[data-imgs]').textContent = '';
+      lastGeneratedPatch = '';
+      mod.classList.remove('show');
+    }
     if (a === 'export') {
-      mod.querySelector('[data-out]').value = generatePatchPrompt(st, mod.querySelector('[data-note]').value);
+      refreshExport();
+      mod.querySelector('[data-ms]').textContent = 'Copy and paste into any AI coding assistant.';
       mod.classList.add('show');
+      mod.querySelector('[data-note]').focus();
       const im = st.pins.filter(p => p.active).flatMap(p => p.imgs);
       const imgsBox = mod.querySelector('[data-imgs]');
       imgsBox.textContent = '';
@@ -468,19 +489,32 @@ export function bootApexUI() {
     if (!st.sel || !t.dataset.p || !(t.type === 'text' || t.type === 'number')) return;
     const p = t.dataset.p;
     let v = t.value.trim();
-    if (p === 'scale') v = String((parseFloat(v) || 100) / 100);
-    else if (v.toLowerCase() === 'full') v = '9999px';
-    else if (t.type === 'number' || /^-?\d+(\.\d+)?$/.test(v)) {
-      v = p === 'lineHeight' ? String(parseFloat(v)) : parseFloat(v) + 'px';
-    }
-    if ((p === 'width' || p === 'height') && st.lock) {
-      const r = st.sel.getBoundingClientRect();
-      const ratio = r.width / (r.height || 1);
+    if (p === 'scale') {
       const num = parseFloat(v);
+      if (!Number.isFinite(num)) { renderPanel(pan, api); return; }
+      v = String(num / 100);
+    } else if (v.toLowerCase() === 'full') {
+      v = '9999px';
+    } else if (t.type === 'number' || /^-?\d+(\.\d+)?$/.test(v)) {
+      const num = parseFloat(v);
+      if (!Number.isFinite(num)) { renderPanel(pan, api); return; }
+      v = p === 'lineHeight' ? String(num) : num + 'px';
+    }
+    if (v !== '' && !api.isValidStyleVal(p, v)) {
+      renderPanel(pan, api);
+      return;
+    }
+    if ((p === 'width' || p === 'height') && st.lock && v !== '') {
+      const beforeRect = st.sel.getBoundingClientRect();
+      const ratio = beforeRect.width / (beforeRect.height || 1);
       api.withTx(() => {
-        api.setStyle(st.sel, p, v);
-        if (p === 'width') api.setStyle(st.sel, 'height', Math.round(num / ratio) + 'px');
-        else api.setStyle(st.sel, 'width', Math.round(num * ratio) + 'px');
+        if (!api.setStyle(st.sel, p, v)) return;
+        const afterRect = st.sel.getBoundingClientRect();
+        if (p === 'width' && afterRect.width > 0) {
+          api.setStyle(st.sel, 'height', Math.round(afterRect.width / ratio) + 'px');
+        } else if (p === 'height' && afterRect.height > 0) {
+          api.setStyle(st.sel, 'width', Math.round(afterRect.height * ratio) + 'px');
+        }
       });
     } else {
       api.setStyle(st.sel, p, v);
@@ -567,6 +601,7 @@ export function bootApexUI() {
       let idx = 2;
       while (used.includes(name)) name = '--' + (rawName || 'couleur') + '-' + idx++;
       st.customColors.push({ n: name, v: val, g: isGrad ? 1 : 0 });
+      st.sessionColors.add(name);
       api.persistColors();
       st.cgadd = null;
       if (isGrad) applyGrad(b.dataset.ncs, val, name);
@@ -628,9 +663,11 @@ export function bootApexUI() {
   // Annotations popup
   const PIN_TITLE = 'Anchored Element Note';
   const closePop = () => {
+    popDraftSeq++;
     zb.style.display = 'none';
     pop.querySelector('strong').textContent = PIN_TITLE;
     pendingImgs.length = 0;
+    pendingImgBytes = 0;
     pop.querySelector('[data-th]').innerHTML = '';
     pop.querySelector('textarea').value = '';
     pendingPin = null;
@@ -680,14 +717,20 @@ export function bootApexUI() {
     if (e.key === 'Escape') closePop();
   });
   const SAFE_IMG_MIME = /^image\/(png|jpeg|webp|gif)$/i;
+  const MAX_IMG_COUNT = 6;
+  const MAX_TOTAL_IMG_BYTES = 10 * 1024 * 1024;
   pop.addEventListener('paste', e => {
+    const draftId = popDraftSeq;
     for (const it of e.clipboardData?.items || []) {
       if (SAFE_IMG_MIME.test(it.type)) {
         const file = it.getAsFile();
         if (!file || file.size > 5 * 1024 * 1024) continue;
+        if (pendingImgs.length >= MAX_IMG_COUNT || pendingImgBytes + file.size > MAX_TOTAL_IMG_BYTES) continue;
         e.preventDefault();
+        pendingImgBytes += file.size;
         const fr = new FileReader();
         fr.onload = () => {
+          if (draftId !== popDraftSeq || !pendingPin) return;
           if (typeof fr.result !== 'string' || !/^data:image\/(png|jpeg|webp|gif);base64,/i.test(fr.result)) return;
           pendingImgs.push(fr.result);
           const img = document.createElement('img');
@@ -701,38 +744,53 @@ export function bootApexUI() {
   });
 
   // Export modal
+  const updateModalExport = () => {
+    const noteVal = mod.querySelector('[data-note]').value;
+    const omitOriginalText = !!mod.querySelector('[data-priv]')?.checked;
+    lastGeneratedPatch = generatePatchPrompt(st, noteVal, { omitOriginalText });
+    mod.querySelector('[data-out]').value = lastGeneratedPatch;
+  };
   mod.onclick = e => {
     if (e.target === mod || e.target.hasAttribute('data-mc')) mod.classList.remove('show');
     if (e.target.hasAttribute('data-cp')) {
       const ta = mod.querySelector('[data-out]');
       const ms = mod.querySelector('[data-ms]');
+      const payload = lastGeneratedPatch;
+      ta.value = payload;
       const ok = () => (ms.textContent = '✓ Copied! Paste it into GPT, Claude, Antigravity, or Cursor.');
-      if (navigator.clipboard?.writeText) {
-        navigator.clipboard.writeText(ta.value).then(ok).catch(() => {
-          ta.select();
-          document.execCommand('copy');
-          ok();
-        });
-      } else {
+      const fail = () => {
+        ta.focus();
         ta.select();
-        document.execCommand('copy');
-        ok();
+        ms.textContent = 'Copy blocked — press Ctrl+C / Cmd+C to copy manually.';
+      };
+      const fallbackCopy = () => {
+        ta.focus();
+        ta.select();
+        let res = false;
+        try { res = document.execCommand('copy'); } catch (_) { res = false; }
+        res ? ok() : fail();
+      };
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(payload).then(ok).catch(fallbackCopy);
+      } else {
+        fallbackCopy();
       }
     }
   };
-  mod.querySelector('[data-note]').addEventListener('input', () => {
-    mod.querySelector('[data-out]').value = generatePatchPrompt(st, mod.querySelector('[data-note]').value);
-  });
+  mod.querySelector('[data-note]').addEventListener('input', updateModalExport);
+  mod.querySelector('[data-priv]').addEventListener('change', updateModalExport);
 
-  // Inline text edit
+  // Inline text edit (preserves nested HTML elements & restores them on Undo)
   const editText = el => {
     const before = el.textContent.trim();
+    const beforeNodes = [...el.childNodes].map(n => n.cloneNode(true));
     el.contentEditable = 'true';
     el.focus();
     const done = () => {
       el.contentEditable = 'false';
       const after = el.textContent.trim();
-      if (after !== before) api.setText(el, before, after);
+      const afterNodes = [...el.childNodes].map(n => n.cloneNode(true));
+      if (after !== before) api.setText(el, before, after, beforeNodes, afterNodes);
       el.removeEventListener('blur', done);
       syncOverlays();
     };
@@ -750,11 +808,15 @@ export function bootApexUI() {
 
   pan.addEventListener('mousedown', e => {
     const t = e.target;
-    if (t.tagName !== 'INPUT' || !t.classList.contains('ax-scrub')) return;
+    if (t.tagName !== 'INPUT' || !t.classList.contains('ax-scrub') || !st.sel) return;
     const m = t.value.trim().match(/^(-?[\d.]+)(px|%|em)?$/);
     if (m) {
+      const prop = t.dataset.p || t.dataset.fx || (t.dataset.sh ? 'boxShadow' : '');
       scrub = {
         t,
+        el: st.sel,
+        prop,
+        prevInline: prop ? st.sel.style[prop] : '',
         y: e.clientY,
         v: parseFloat(m[1]),
         u: m[2] || '',
@@ -841,7 +903,19 @@ export function bootApexUI() {
       let n = Math.round((scrub.v + d * scrub.step * (e.shiftKey ? 10 : 1)) * 100) / 100;
       if (scrub.t.dataset.fx) n = Math.max(0, n);
       scrub.t.value = n + scrub.u;
-      scrub.t.dispatchEvent(new Event(scrub.t.dataset.sh || scrub.t.dataset.fx ? 'input' : 'change', { bubbles: true }));
+      if (scrub.el && scrub.prop) {
+        if (scrub.t.dataset.fx) {
+          scrub.el.style[scrub.prop] = n ? `blur(${n}px)` : 'none';
+        } else if (scrub.t.dataset.p) {
+          const val = scrub.prop === 'scale'
+            ? String(n / 100)
+            : scrub.prop === 'lineHeight'
+              ? String(n)
+              : n + (scrub.u || 'px');
+          scrub.el.style[scrub.prop] = val;
+        }
+        syncOverlays();
+      }
       return;
     }
     if (!isInteractive()) return;
@@ -875,7 +949,7 @@ export function bootApexUI() {
         syncOverlays();
       } else if (drag.moved || Math.abs(dx) + Math.abs(dy) > 3) {
         drag.moved = true;
-        drag.finalTransform = `translate(${Math.round(drag.tx + dx)}px, ${Math.round(drag.ty + dy)}px)`;
+        drag.finalTransform = composeTranslate(drag.prevTransform, drag.tx + dx, drag.ty + dy);
         drag.el.style.transform = drag.finalTransform;
         syncOverlays();
       }
@@ -898,10 +972,15 @@ export function bootApexUI() {
 
   window.addEventListener('mouseup', e => {
     if (scrub && scrub.on) {
+      const sc = scrub;
+      scrub = null;
       document.body.style.cursor = document.body.style.userSelect = '';
+      if (sc.el && sc.prop) sc.el.style[sc.prop] = sc.prevInline;
+      sc.t.dispatchEvent(new Event(sc.t.dataset.sh || sc.t.dataset.fx ? 'input' : 'change', { bubbles: true }));
       renderPanel(pan, api);
+    } else {
+      scrub = null;
     }
-    scrub = null;
     tdrag = null;
 
     if (drag) {
@@ -960,7 +1039,7 @@ export function bootApexUI() {
         width: u.r - u.l + 8 + 'px',
         height: u.b - u.t + 8 + 'px'
       });
-      pendingPin = { s: g.map(getUniqueSelector).join(' + '), group: g };
+      pendingPin = { s: g.map(api.getTargetSelector).join(' + '), group: g };
       pop.querySelector('strong').textContent = `Zone Note · ${g.length} element${g.length > 1 ? 's' : ''}`;
       Object.assign(pop.style, {
         left: Math.min(e.clientX + 10, innerWidth - 270) + 'px',
@@ -986,7 +1065,7 @@ export function bootApexUI() {
         role: st.shapeRole,
         label: '',
         el,
-        sel: el ? getUniqueSelector(el) : '',
+        sel: el ? api.getTargetSelector(el) : '',
         x1: sd.x1,
         y1: sd.y1,
         x2: sd.x2,
@@ -1021,7 +1100,7 @@ export function bootApexUI() {
       if (st.mode === 'zone' || st.mode === 'shape') return;
       if (st.mode === 'pin') {
         const br = t.getBoundingClientRect();
-        pendingPin = { s: getUniqueSelector(t), el: t, dx: e.clientX - br.left, dy: e.clientY - br.top };
+        pendingPin = { s: api.getTargetSelector(t), el: t, dx: e.clientX - br.left, dy: e.clientY - br.top };
         pop.querySelector('strong').textContent = PIN_TITLE;
         Object.assign(pop.style, {
           left: Math.min(e.clientX + 10, innerWidth - 270) + 'px',
@@ -1055,18 +1134,22 @@ export function bootApexUI() {
     const k = e.key.toLowerCase();
     const active = shadow.activeElement || document.activeElement;
     const typing = active && (/INPUT|TEXTAREA|SELECT/.test(active.tagName) || active.isContentEditable);
-    if (e.altKey && k === 'e') {
+    if ((e.altKey && e.shiftKey && k === 'm') || (e.altKey && !e.shiftKey && k === 'e')) {
       e.preventDefault();
       toggle();
       return;
     }
     if (!st.on) return;
+    if (k === 'escape' && mod.classList.contains('show')) {
+      mod.classList.remove('show');
+      return;
+    }
+    if (typing) return;
     if ((e.ctrlKey || e.metaKey) && k === 'z') {
       e.preventDefault();
       e.shiftKey ? api.redo() : api.undo();
       return;
     }
-    if (typing) return;
     if (k === ' ' && !spacePreview) {
       e.preventDefault();
       spacePreview = true;
@@ -1090,6 +1173,7 @@ export function bootApexUI() {
       syncOverlays();
       renderPanel(pan, api);
     }
+    if (!isInteractive()) return;
     if (st.sel && e.altKey && k.startsWith('arrow')) {
       e.preventDefault();
       api.moveSibling(st.sel, k === 'arrowleft' || k === 'arrowup' ? -1 : 1);
@@ -1105,7 +1189,7 @@ export function bootApexUI() {
       if (k === 'arrowright') x += step;
       if (k === 'arrowup') y -= step;
       if (k === 'arrowdown') y += step;
-      api.setStyle(st.sel, 'transform', `translate(${x}px, ${y}px)`);
+      api.setStyle(st.sel, 'transform', composeTranslate(st.sel.style.transform, x, y));
     }
   });
 
