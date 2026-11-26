@@ -458,14 +458,20 @@
         <div class="card">
           <span class="tag good" data-i18n="i1_tag">Recommended · localhost &amp; live sites</span>
           <h3 style="margin:0 0 8px" data-i18n="i1_t">Chrome Extension (Manifest V3)</h3>
-          <p style="margin:0;color:var(--muted);font-size:14px" data-i18n="i1_d">Zero changes in your Git repos. Minimal permissions (<code>activeTab</code> + <code>scripting</code>).</p>
-          <div class="code-box">1. npm run build<br>2. Open chrome://extensions<br>3. Enable "Developer mode"<br>4. Load unpacked: dist/chrome-extension/<br>5. Press Alt+E on any tab</div>
+          <p style="margin:0;color:var(--muted);font-size:14px" data-i18n="i1_d">Works on Chrome, Brave, Edge &amp; Arc. Zero changes in your Git repos. Minimal permissions (<code>activeTab</code> + <code>scripting</code>).</p>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-primary btn-sm" href="./downloads/m84-patch-chrome-extension.zip" download="m84-patch-chrome-extension.zip" data-i18n="i1_dl">⬇ Download Chrome Extension (.zip)</a>
+          </div>
+          <div class="code-box" data-i18n="i1_steps">1. Download &amp; unzip m84-patch-chrome-extension.zip<br>2. Open chrome://extensions (Chrome / Brave / Edge)<br>3. Enable "Developer mode" (top right)<br>4. Click "Load unpacked" → select the unzipped folder<br>5. Press Alt+E (or click the M84 icon) on any tab</div>
         </div>
         <div class="card">
           <span class="tag" style="background:var(--brand-soft);color:#7dd3fc" data-i18n="i2_tag">HTML Artifacts · Claude / Antigravity</span>
           <h3 style="margin:0 0 8px" data-i18n="i2_t">Standalone AI Skill (.zip + SKILL.md)</h3>
-          <p style="margin:0;color:var(--muted);font-size:14px" data-i18n="i2_d">Import <code>m84-patch-skill.zip</code> in Claude.ai or use the global <code>m84-patch</code> skill in Antigravity.</p>
-          <div class="code-box">dist/claude-skill/<br>├── SKILL.md            # # Visual UI Patch protocol<br>├── m84-patch.html      # &lt;script data-m84-patch&gt;<br>└── m84-patch-skill.zip # Ready to import</div>
+          <p style="margin:0;color:var(--muted);font-size:14px" data-i18n="i2_d">Import <code>m84-patch-skill.zip</code> in Claude.ai or drop it into your Antigravity / Cursor / Windsurf skills folder.</p>
+          <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-secondary btn-sm" href="./downloads/m84-patch-skill.zip" download="m84-patch-skill.zip" data-i18n="i2_dl">⬇ Download AI Skill (.zip)</a>
+          </div>
+          <div class="code-box">m84-patch-skill.zip<br>├── SKILL.md       # # Visual UI Patch protocol<br>└── m84-patch.html # &lt;script data-m84-patch&gt;</div>
         </div>
       </div>
     </div>
@@ -559,10 +565,13 @@
       inst_sub: 'كود واحد منظم كيعطي إضافة Chrome MV3 و Skill مستقل للذكاء الاصطناعي.',
       i1_tag: 'موصى به · localhost والمواقع اللايف',
       i1_t: 'إضافة Chrome (Manifest V3)',
-      i1_d: 'بلا ما تبدل والو فالكود ديال المشروع ديالك. صلاحيات خفيفة وآمنة (<code>activeTab</code> + <code>scripting</code>).',
+      i1_d: 'خدامة فـ Chrome و Brave و Edge و Arc. بلا ما تبدل والو فالكود ديالك. صلاحيات خفيفة وآمنة (<code>activeTab</code> + <code>scripting</code>).',
+      i1_dl: '⬇ تحميل إضافة Chrome (.zip)',
+      i1_steps: '1. حمل وفك الضغط على m84-patch-chrome-extension.zip<br>2. حل chrome://extensions فـ Chrome أولا Brave أولا Edge<br>3. فعل "Developer mode" (الفوق على اليمين)<br>4. كليكي على "Load unpacked" واختار الدوسي اللي فكيتي<br>5. ورك على Alt+E فوق أي صفحة باش تخدم الأداة',
       i2_tag: 'ملفات HTML · Claude / Antigravity',
       i2_t: 'Skill مستقل (.zip + SKILL.md)',
-      i2_d: 'أدخل <code>m84-patch-skill.zip</code> فـ Claude.ai أولا خدم بالـ skill العالمي <code>m84-patch</code> فـ Antigravity.',
+      i2_d: 'أدخل <code>m84-patch-skill.zip</code> فـ Claude.ai أولا حطو فمجلد skills ديال Antigravity / Cursor / Windsurf.',
+      i2_dl: '⬇ تحميل AI Skill (.zip)',
       au_eyebrow: 'Open Source · مجتمع Product و UX/UI',
       au_title: 'من تطوير Moslih84',
       au_desc: '<strong>M84 Patch</strong> مشروع مفتوح المصدر برخصة <strong>MIT</strong> باش يعاون Product Designers و UX/UI Designers و Vibecoders يطورو واجهات احترافية بسرعة مع كود نقي.',

@@ -1,6 +1,6 @@
 # M84 Patch — Project Status
 
-> **Dernière mise à jour** : 2026-11-26 11:46 UTC
+> **Dernière mise à jour** : 2026-11-26 12:11 UTC
 > **Version** : `2.0.0` (Open Source · Licence MIT)
 > **Auteur** : [Moslih84](https://moslih84.vercel.app)
 > **Site Live** : https://m84patch.vercel.app · **GitHub** : https://github.com/moslihayoub/M84-Patch
@@ -23,3 +23,4 @@
 - **2026-11-26** : Passage complet de la solution **M84 Patch** en **Anglais** (`src/`, Extension Chrome MV3, Playground, Skill, 4 nouvelles captures) + **Landing Page bilingue EN (`LTR`) / الدارجة المغربية (`RTL`)** avec détection automatique de la langue système (`navigator.languages`) et sélecteur `EN | الدارجة`. Poussé sur GitHub & déployé sur Vercel.
 - **2026-11-26** : URL auteur mise à jour vers `https://moslih84.vercel.app`, ajout favicon SVG (`docs/favicon.svg`) + `apple-touch-icon.png` + `theme-color`, enregistrement officiel du projet **M84 Patch** dans Antigravity (`~/.gemini/config/projects/`) et dans le registre global `GEMINI.md`.
 - **2026-11-26** : Harmonisation 100 % Anglais du SEO (`README.md`, `docs/demo.html`, `robots.txt`, `sitemap.xml` corrigés vers `https://m84patch.vercel.app`, description & homepage GitHub mises à jour) + suppression des warnings `npm warn cache-dir` sur Vercel (`installCommand: "true"`, `buildCommand: "node build.mjs"` dans `vercel.json`).
+- **2026-11-26** : Ajout des téléchargements directs 1-clic (`docs/downloads/m84-patch-chrome-extension.zip` et `docs/downloads/m84-patch-skill.zip` générés automatiquement par `build.mjs`) + boutons de téléchargement bilingues EN/الدارجة dans la section Install de `docs/index.html` et dans `README.md`.

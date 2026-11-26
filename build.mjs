@@ -379,12 +379,22 @@ function main() {
 
   // 1. Build Chrome Extension MV3
   const extCode = bundleModules({ autoOpen: true });
+  const manifestBuf = fs.readFileSync(path.join(ROOT, 'chrome-ext', 'manifest.json'));
+  const bgBuf = fs.readFileSync(path.join(ROOT, 'chrome-ext', 'background.js'));
   fs.writeFileSync(path.join(DIST_EXT, 'm84-patch-content.js'), extCode, 'utf8');
-  fs.copyFileSync(path.join(ROOT, 'chrome-ext', 'manifest.json'), path.join(DIST_EXT, 'manifest.json'));
-  fs.copyFileSync(path.join(ROOT, 'chrome-ext', 'background.js'), path.join(DIST_EXT, 'background.js'));
-  [16, 48, 128].forEach(sz => {
-    fs.writeFileSync(path.join(DIST_EXT, 'icons', `icon${sz}.png`), createIconPng(sz));
+  fs.writeFileSync(path.join(DIST_EXT, 'manifest.json'), manifestBuf);
+  fs.writeFileSync(path.join(DIST_EXT, 'background.js'), bgBuf);
+  const iconEntries = [16, 48, 128].map(sz => {
+    const png = createIconPng(sz);
+    fs.writeFileSync(path.join(DIST_EXT, 'icons', `icon${sz}.png`), png);
+    return { name: `icons/icon${sz}.png`, data: png };
   });
+  const extZipBuf = createZipBuffer([
+    { name: 'manifest.json', data: manifestBuf },
+    { name: 'background.js', data: bgBuf },
+    { name: 'm84-patch-content.js', data: extCode },
+    ...iconEntries
+  ]);
 
   // 2. Build Standalone HTML Skill + cross-platform .zip
   const htmlCode = bundleModules({ autoOpen: false });
@@ -417,8 +427,14 @@ function main() {
   );
   fs.writeFileSync(path.join(ROOT, 'docs', 'apple-touch-icon.png'), createIconPng(128));
 
+  // 5. Publish ready-to-download ZIPs into docs/downloads/ (served by Vercel & GitHub Pages)
+  const downloadsDir = path.join(ROOT, 'docs', 'downloads');
+  ensureDir(downloadsDir);
+  fs.writeFileSync(path.join(downloadsDir, 'm84-patch-chrome-extension.zip'), extZipBuf);
+  fs.writeFileSync(path.join(downloadsDir, 'm84-patch-skill.zip'), zipBuf);
+
   console.log(`M84 Patch build OK:`);
-  console.log(`  - Chrome Ext MV3 : ${DIST_EXT} (${(extCode.length / 1024).toFixed(1)} KB)`);
+  console.log(`  - Chrome Ext MV3 : ${DIST_EXT} (${(extCode.length / 1024).toFixed(1)} KB · ZIP ${(extZipBuf.length / 1024).toFixed(1)} KB)`);
   console.log(`  - Skill HTML     : ${path.join(DIST_SKILL, 'm84-patch.html')} (${(scriptBlock.length / 1024).toFixed(1)} KB)`);
   console.log(`  - Skill ZIP      : ${zipPath} (${(zipBuf.length / 1024).toFixed(1)} KB)`);
   if (GLOBAL_SKILL) console.log(`  - Global Skill   : ${GLOBAL_SKILL}`);

@@ -53,13 +53,14 @@ Describing visual UI tweaks in plain text to an LLM (*"nudge this button up, add
 ## Installation
 
 ### 1. Chrome Extension Manifest V3 (`localhost` + live/staging sites)
-1. Clone this repository or download the `dist/chrome-extension/` folder.
-2. Open `chrome://extensions` in Chrome / Brave / Edge.
-3. Enable **Developer mode** → **Load unpacked** → select `dist/chrome-extension/`.
+1. Download **[m84-patch-chrome-extension.zip](https://m84patch.vercel.app/downloads/m84-patch-chrome-extension.zip)** and unzip it (or use `dist/chrome-extension/` from this repo).
+2. Open `chrome://extensions` in Chrome / Brave / Edge / Arc.
+3. Enable **Developer mode** (top right) → click **Load unpacked** → select the unzipped folder.
 4. Press **`Alt+E`** or click the **M84 Patch** toolbar icon on any tab.
 
 ### 2. Claude.ai / Antigravity Skill (HTML artifacts)
-- **Claude.ai**: upload `dist/claude-skill/m84-patch-skill.zip` (`SKILL.md` + `m84-patch.html`).
+- **Direct download**: **[m84-patch-skill.zip](https://m84patch.vercel.app/downloads/m84-patch-skill.zip)** (`SKILL.md` + `m84-patch.html`).
+- **Claude.ai**: upload `m84-patch-skill.zip` in Skills.
 - **Antigravity**: the build script automatically syncs `~/.gemini/config/skills/m84-patch/SKILL.md`.
 
 ### 3. Local Build (zero npm dependencies)
