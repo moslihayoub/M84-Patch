@@ -1,19 +1,19 @@
 # M84 Patch — Project Status
 
-> **Dernière mise à jour** : 2026-11-26 14:34 UTC
+> **Dernière mise à jour** : 2026-11-27 00:18 UTC
 > **Version** : `2.1.0` (Open Source · Licence MIT)
 > **Auteur** : [Moslih84](https://moslih84.vercel.app)
-> **Site Live** : https://m84patch.vercel.app · **GitHub** : https://github.com/moslihayoub/M84-Patch
-> **Statut** : En ligne sur Vercel + GitHub Open Source + Projet enregistré dans Antigravity (`M84 Patch`)
+> **Site Live** : https://m84patch.vercel.app · **GitHub** : https://github.com/moslihayoub/M84-Patch · **Product Hunt** : https://www.producthunt.com/posts/m84-patch
+> **Statut** : En ligne sur Vercel (`v2.1.0`) + GitHub Open Source + Lancement Product Hunt planifié (`2026-11-27 00:00 Pacific` / `09:00 Maroc`, ID `1332643`)
 
 ## Architecture du projet (`standalone_projects/m84-patch`)
-- `src/` : Code modulaire (`styles.js`, `utils.js`, `state.js`, `export.js`, `panel.js`, `app.js`), interface isolée dans un **Shadow DOM**.
+- `src/` : Code modulaire (`styles.js`, `utils.js`, `state.js`, `export.js`, `panel.js`, `app.js`), interface isolée dans un **Shadow DOM fermé (`mode: 'closed'`)**.
 - `build.mjs` : Compilation zéro-dépendance vers :
-  - `dist/chrome-extension/` (Extension Chrome MV3, `activeTab` + `scripting`, icônes PNG 16/48/128, raccourci `Alt+E`).
-  - `dist/claude-skill/` (`SKILL.md`, `m84-patch.html`, `m84-patch-skill.zip`).
-  - `~/.gemini/config/skills/m84-patch/` (Skill global Antigravity).
-  - `demo/index.html` & `docs/demo.html` (Playground interactif Product Designer).
-- `docs/` : **Landing Page Open-Source** (`docs/index.html`, prête pour GitHub Pages) + 4 captures réelles (`docs/assets/step-1-open.png` → `step-4-patch.png`).
+  - `dist/chrome-extension/` (Extension Chrome MV3, `activeTab` + `scripting`, icônes PNG 16/48/128, raccourci `Alt+Shift+M`).
+  - `dist/claude-skill/` (`SKILL.md`, `m84-patch.html`, `m84-patch-skill.zip` encapsulé dans `m84-patch/`).
+  - `~/.gemini/config/skills/m84-patch/` (Skill global Antigravity — opt-in via `npm run sync-skill`).
+  - `demo/index.html` & `docs/demo.html` (Playground interactif Desktop-Only) + `docs/downloads/*.zip`.
+- `docs/` : **Landing Page Open-Source bilingue EN / الدارجة** (`docs/index.html`, mobile-first + Drawer + Toast Desktop-Only) + captures workflow & 4 captures d'installation Chrome (`docs/assets/install-1-download.svg` → `install-4-launch.svg`).
 - Documentation : `README.md`, `HISTORY.md`, `STATUS.md`, `LICENSE` (MIT).
 
 ## Changelog
@@ -28,3 +28,4 @@
 - **2026-11-26** : **Sprint `v2.1.0` (P0 + P1 Sécurité) & Unification identité visuelle déployés** — correctifs audit (#1, #2, #4, #6, #7, #8, #10, #12, #19, #20, #21, #23 + Sec#1/#2/#3/#4/#5), unification du logo **`M` blanc dans bloc bleu** sur tout l'écosystème (`favicon.svg`, `apple-touch-icon.png`, icônes Extension Chrome PNG 16/48/128, Landing, Playground `demo.html`, SVGs d'installation), poussé sur GitHub & déployé sur Vercel (`m84patch.vercel.app`).
 - **2026-11-26** : Fix critique mobile LP **الدارجة (RTL)** & Drawer — correction de la spécificité CSS (`html[dir="rtl"] .drawer.open` qui bloquait le Drawer hors écran en arabe), Drawer compacté (`272px` max, `visibility: hidden` fermé), isolation BiDi complète (`:root`, `Code { }`, parenthèses, footer, `.code-box` `white-space: pre`), boutons download plein écran sur mobile. Déployé sur `main`.
 - **2026-11-26** : Garde-fou **Desktop Only** sur mobile — clic sur `Try Interactive Playground` depuis un mobile affiche un **Toast bilingue EN/الدارجة** (`خدام غير فالبيسي فقط`) sans ouvrir la démo + ouverture directe de `/demo` sur mobile bloquée par un écran **Desktop Only** en Darija naturelle avec bouton retour & copie du lien. Déployé sur `main`.
+- **2026-11-27** : **Lancement Product Hunt soumis & planifié** (`launch_id: 1332643`, compte `@paco84`, statut `scheduled` pour `2026-11-27 00:00 America/Los_Angeles` · `https://www.producthunt.com/posts/m84-patch`) avec thumbnail + 5 captures galerie + 1er commentaire Maker épinglé.
